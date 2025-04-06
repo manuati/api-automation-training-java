@@ -32,12 +32,6 @@ public class SessionManager {
     }
 
     private static String createCacheKey(String username, String password) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(username);
-        builder.append(":");
-        builder.append(password);
-
-        return builder.toString();
+        return username + ":" + password;
     }
 }

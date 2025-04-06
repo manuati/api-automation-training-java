@@ -1,13 +1,13 @@
 package models.responses;
 
-public class Response <T>{
+public class ResponseContainer<T>{
 
     private T data;
     private int status;
     private String headers;
     private Long responseTime;
 
-    public Response(T data, int status, String headers, Long responseTime) {
+    public ResponseContainer(T data, int status, String headers, Long responseTime) {
         this.data = data;
         this.status = status;
         this.headers = headers;
