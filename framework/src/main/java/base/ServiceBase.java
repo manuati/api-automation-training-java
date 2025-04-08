@@ -110,13 +110,14 @@ public class ServiceBase<T> {
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    protected T put(String url) {
-        // Guardo el tiempo actual como comienzo
-        // Invoco el servicio GET en el 'url' usando el api client
-        // Guardo el tiempo actual como fin
-        // Construyo un objeto de respuesta haciendo uso de la respuesta de la api y los tiempos de inicio y fin
-        // Retorno el objeto creado
-        return null;
+    protected ResponseContainer put(String url, Object payload, Map<String, String> headers, Class responseClass) throws IOException {
+        if (headers == null) headers = defaultHeaders;
+
+        Long startTime = new Date().getTime();
+        Response response = apiClient.put(url, payload, headers);
+        Long endTime = new Date().getTime();
+
+        return buildResponse(endTime, startTime, response, responseClass);
     }
 
     protected T patch(String url) {

@@ -1,5 +1,4 @@
 import base.ServiceBase;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import models.requests.BookingModel;
 import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
@@ -16,19 +15,20 @@ public class Main {
             serviceBase.authenticate();
 
             BookingModel model = new BookingModel();
-            model.setFirstName("Jim");
-            model.setLastName("Brown");
-            model.setDepositPaid(true);
-            model.setTotalPrice(111);
-            model.setAdditionalNeeds("Breakfast");
+            model.setFirstname("Jim");
+            model.setLastname("Brown");
+            model.setDepositpaid(true);
+            model.setTotalprice(111);
+            model.setAdditionalneeds("Breakfast");
             BookingModel.BookingDates bookingDates = new BookingModel.BookingDates();
-            bookingDates.setCheckIn("2018-01-01");
-            bookingDates.setCheckOut("2019-01-01");
-            model.setBookingDates(bookingDates);
+            bookingDates.setCheckin("2018-01-01");
+            bookingDates.setCheckout("2019-01-01");
+            model.setBookingdates(bookingDates);
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            ResponseContainer response = serviceBase.post("https://restful-booker.herokuapp.com/booking", objectMapper.writeValueAsString(model), null, BookingResponse.class);
-            System.out.println("Got me a response");
+            ResponseContainer<BookingResponse> response = serviceBase.post("https://restful-booker.herokuapp.com/booking", model, null, BookingResponse.class);
+
+            //var response = serviceBase.get("https://restful-booker.herokuapp.com/booking", objectMapper);
+            System.out.println("Got me a response for POST: "+response.getStatus());
         } catch (Exception e) {
             System.out.println("Shit's fucked: "+e.getMessage());
             throw e;

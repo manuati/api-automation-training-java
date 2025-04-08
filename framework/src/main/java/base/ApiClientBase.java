@@ -3,7 +3,6 @@ package base;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import utils.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,9 +10,6 @@ import java.util.Map;
 
 public abstract class ApiClientBase {
 
-    // Clase base del api client. En la version de typescript. La misma posee el cliente que hace las invocaciones a la URL
-    // Esta clase deberia construir y poner a disposicion el client a utilizar para las invocaciones HTTP
-    // Opciones de librerias: Jersey, OkHttp, Apache HttpClient, Java 11 HttpClient
     private Map<String, String> baseHeaders;
 
     private OkHttpClient client;
@@ -26,15 +22,15 @@ public abstract class ApiClientBase {
         client = new OkHttpClient();
     }
 
-    public Response post(String url, Object payload, Map<String, String> headers) throws JsonProcessingException {
-        RequestBody requestBody = createRequestFromObject(payload);
+    private Response executeMethod(String url, String method, Object payload, Map<String, String> headers) throws JsonProcessingException {
+        RequestBody requestBody = createRequest(payload);
         Request.Builder builder = createBaseRequestBuilder(url, headers);
-        builder.post(requestBody);
+        builder.method(method, requestBody);
 
         return executeRequest(builder.build());
     }
 
-    private RequestBody createRequestFromObject(Object payloadObject) throws JsonProcessingException {
+    private RequestBody createRequest(Object payloadObject) throws JsonProcessingException {
         String mediaType = baseHeaders.get("Content-Type");
 
         if (payloadObject == null) {
@@ -45,11 +41,15 @@ public abstract class ApiClientBase {
         return RequestBody.create(mapper.writeValueAsString(payloadObject), MediaType.get(mediaType));
     }
 
-    public Response get(String url, Map<String, String> headers) {
-        Request.Builder builder = createBaseRequestBuilder(url, headers);
-        builder.get();
+    private RequestBody createRequest2(Object payloadObject) throws JsonProcessingException {
+        String mediaType = baseHeaders.get("Content-Type");
 
-        return executeRequest(builder.build());
+        if (payloadObject == null) {
+            return RequestBody.create("", MediaType.get(mediaType));
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        return RequestBody.create(mapper.writeValueAsString(payloadObject), MediaType.get(mediaType));
     }
 
     public Response executeRequest(Request request) {
@@ -71,14 +71,15 @@ public abstract class ApiClientBase {
         return builder;
     }
 
-    private RequestBody createRequest(String requestPayload) {
-        String mediaType = baseHeaders.get("Content-Type");
-
-        if (StringUtils.isEmpty(requestPayload)) {
-            return RequestBody.create("", MediaType.get(mediaType));
-        }
-
-        return RequestBody.create(requestPayload, MediaType.get(mediaType));
+    public Response put(String url, Object payload, Map<String, String> headers) throws JsonProcessingException {
+        return executeMethod(url, "PUT", payload, headers);
     }
 
+    public Response post(String url, Object payload, Map<String, String> headers) throws JsonProcessingException {
+        return executeMethod(url, "POST", payload, headers);
+    }
+
+    public Response get(String url, Map<String, String> headers) throws JsonProcessingException {
+        return executeMethod(url, "GET", null, headers);
+    }
 }

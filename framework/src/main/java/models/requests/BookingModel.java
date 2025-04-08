@@ -12,83 +12,83 @@ public class BookingModel {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public Integer getTotalPrice() {
-        return totalPrice;
+    public Integer getTotalprice() {
+        return totalprice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotalprice(Integer totalprice) {
+        this.totalprice = totalprice;
     }
 
-    public Boolean getDepositPaid() {
-        return depositPaid;
+    public Boolean getDepositpaid() {
+        return depositpaid;
     }
 
-    public void setDepositPaid(Boolean depositPaid) {
-        this.depositPaid = depositPaid;
+    public void setDepositpaid(Boolean depositpaid) {
+        this.depositpaid = depositpaid;
     }
 
-    public BookingDates getBookingDates() {
-        return bookingDates;
+    public BookingDates getBookingdates() {
+        return bookingdates;
     }
 
-    public void setBookingDates(BookingDates bookingDates) {
-        this.bookingDates = bookingDates;
+    public void setBookingdates(BookingDates bookingdates) {
+        this.bookingdates = bookingdates;
     }
 
-    public String getAdditionalNeeds() {
-        return additionalNeeds;
+    public String getAdditionalneeds() {
+        return additionalneeds;
     }
 
-    public void setAdditionalNeeds(String additionalNeeds) {
-        this.additionalNeeds = additionalNeeds;
+    public void setAdditionalneeds(String additionalneeds) {
+        this.additionalneeds = additionalneeds;
     }
 
     private Integer id;
-    private String firstName;
-    private String lastName;
-    private Integer totalPrice;
-    private Boolean depositPaid;
-    private BookingDates bookingDates;
-    private String additionalNeeds;
+    private String firstname;
+    private String lastname;
+    private Integer totalprice;
+    private Boolean depositpaid;
+    private BookingDates bookingdates;
+    private String additionalneeds;
 
     public static class BookingDates {
-        private String checkIn;
-        private String checkOut;
+        private String checkin;
+        private String checkout;
 
         public BookingDates() {
         }
 
-        public String getCheckIn() {
-            return checkIn;
+        public String getCheckin() {
+            return checkin;
         }
 
-        public void setCheckIn(String checkIn) {
-            this.checkIn = checkIn;
+        public void setCheckin(String checkin) {
+            this.checkin = checkin;
         }
 
-        public String getCheckOut() {
-            return checkOut;
+        public String getCheckout() {
+            return checkout;
         }
 
-        public void setCheckOut(String checkOut) {
-            this.checkOut = checkOut;
+        public void setCheckout(String checkout) {
+            this.checkout = checkout;
         }
     }
 

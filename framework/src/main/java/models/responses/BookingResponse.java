@@ -3,25 +3,25 @@ package models.responses;
 import models.requests.BookingModel;
 
 public class BookingResponse {
-    private Long bookingId;
-    private BookingModel bookingModel;
+    private Long bookingid;
+    private BookingModel booking;
 
     public BookingResponse() {
     }
 
-    public Long getBookingId() {
-        return bookingId;
+    public Long getBookingid() {
+        return bookingid;
     }
 
-    public void setBookingId(Long bookingId) {
-        this.bookingId = bookingId;
+    public void setBookingid(Long bookingid) {
+        this.bookingid = bookingid;
     }
 
-    public BookingModel getBookingModel() {
-        return bookingModel;
+    public BookingModel getBooking() {
+        return booking;
     }
 
-    public void setBookingModel(BookingModel bookingModel) {
-        this.bookingModel = bookingModel;
+    public void setBooking(BookingModel booking) {
+        this.booking = booking;
     }
 }
