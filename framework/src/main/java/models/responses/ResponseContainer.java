@@ -3,11 +3,11 @@ package models.responses;
 public class ResponseContainer<T>{
 
     private T data;
-    private int status;
+    private Integer status;
     private String headers;
     private Long responseTime;
 
-    public ResponseContainer(T data, int status, String headers, Long responseTime) {
+    public ResponseContainer(T data, Integer status, String headers, Long responseTime) {
         this.data = data;
         this.status = status;
         this.headers = headers;
@@ -18,7 +18,7 @@ public class ResponseContainer<T>{
         return data;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 

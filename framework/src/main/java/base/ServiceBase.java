@@ -1,10 +1,10 @@
 package base;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.requests.CredentialModel;
 import models.responses.ResponseContainer;
-import models.responses.ResponseContainerJson;
+import models.responses.SessionResponse;
 import okhttp3.Response;
-import org.json.JSONObject;
 import utils.ErrorMessages;
 import utils.StringUtils;
 
@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServiceBase<T> {
+    private Class<T> modelClass;
 
     protected ApiClient apiClient;
     protected String url;
@@ -48,7 +49,6 @@ public class ServiceBase<T> {
             throw new RuntimeException(ErrorMessages.MISSING_USERNAME_PASSWORD);
         }
 
-        // Verifico si hay un token cacheado. Si lo hay, lo seteo dentro de la configuracion, en los headers (cookie de token=<token cacheado>) y retorno
         String token = SessionManager.getCachedToken(username, password);
         if (!StringUtils.isEmpty(token)) {
             saveCookieInHeaders(token);
@@ -56,10 +56,12 @@ public class ServiceBase<T> {
             return;
         }
 
-        CredentialModel requestBody = new CredentialModel(username, password);
-        ResponseContainerJson response = this.post(authUrl(), new JSONObject(requestBody));
+        CredentialModel credentialRequest = new CredentialModel(username, password);
 
-        token = response.getData().getString("token");
+        ResponseContainer<SessionResponse> loginResponse = this.post(authUrl(), credentialRequest, null, SessionResponse.class);
+
+        token = loginResponse.getData().getToken();
+
         SessionManager.storeToken(username, password, token);
         saveCookieInHeaders(token);
         System.out.println("Token saved");
@@ -73,33 +75,39 @@ public class ServiceBase<T> {
         return "token=" + token;
     }
 
-    private void buildResponse(Integer endTime, Integer startTime, T response) {
-        // Calculo el tiempo de la respuesta como endTime - startTime
-        // Creo un obejto Response tipado que posee la data del objeto, el status de la respuesta, los headers de la respuesta, y el tiempo de la respuesta
+    private ResponseContainer buildResponse(Long endTime, Long startTime, Response response, Class responseClass) throws IOException {
+        Long responseTime = endTime - startTime;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        int status = response.code();
+        String headers = response.headers().toString();
+
+        if (status < 200 || status >= 300) {
+            return new ResponseContainer<>(null, status, headers, responseTime);
+        }
+
+        var data = objectMapper.readValue(response.body().string(), responseClass);
+        return new ResponseContainer<>(data, status, headers, responseTime);
     }
 
-    protected T get(String url) {
-        // Guardo el tiempo actual como comienzo
-        // Invoco el servicio GET en el 'url' usando el api client
-        // Guardo el tiempo actual como fin
-        // Construyo un objeto de respuesta haciendo uso de la respuesta de la api y los tiempos de inicio y fin
-        // Retorno el objeto creado
-        return null;
+    public ResponseContainer get(String url, Map<String, String> headers, Class responseClass) throws IOException {
+        if (headers == null) headers = defaultHeaders;
+
+        Long startTime = new Date().getTime();
+        Response response = apiClient.get(url, headers);
+        Long endTime = new Date().getTime();
+
+        return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    protected ResponseContainerJson post(String url, JSONObject payload) throws IOException {
-        return post(url, payload, defaultHeaders);
-    }
+    public ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) throws IOException {
+        if (headers == null) headers = defaultHeaders;
 
-    protected ResponseContainerJson post(String url, JSONObject payload, Map<String, String> headers) throws IOException {
         Long startTime = new Date().getTime();
         Response response = apiClient.post(url, payload, headers);
         Long endTime = new Date().getTime();
 
-        return new ResponseContainerJson(new JSONObject(response.body().string()),
-                response.header("Status"),
-                new JSONObject(response.headers().toMultimap()),
-                endTime-startTime);
+        return buildResponse(endTime, startTime, response, responseClass);
     }
 
     protected T put(String url) {

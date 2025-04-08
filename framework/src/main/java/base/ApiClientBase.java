@@ -1,7 +1,9 @@
 package base;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import org.json.JSONObject;
+import utils.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,34 +26,59 @@ public abstract class ApiClientBase {
         client = new OkHttpClient();
     }
 
-    public Response executeRequest(String url, String method, JSONObject requestPayload, Map<String, String> headers) {
-        RequestBody requestBody = createRequest(requestPayload);
+    public Response post(String url, Object payload, Map<String, String> headers) throws JsonProcessingException {
+        RequestBody requestBody = createRequestFromObject(payload);
+        Request.Builder builder = createBaseRequestBuilder(url, headers);
+        builder.post(requestBody);
 
-        Request.Builder builder = new Request.Builder()
-                .url(url)
-                .method(method, requestBody);
+        return executeRequest(builder.build());
+    }
 
-        baseHeaders.forEach((key, value) -> builder.addHeader(key,value));
-        if (headers != null) headers.forEach((key, value) -> builder.addHeader(key,value));
+    private RequestBody createRequestFromObject(Object payloadObject) throws JsonProcessingException {
+        String mediaType = baseHeaders.get("Content-Type");
 
-        Request request = builder.build();
+        if (payloadObject == null) {
+            return RequestBody.create("", MediaType.get(mediaType));
+        }
 
-        Response responseString = null;
+        ObjectMapper mapper = new ObjectMapper();
+        return RequestBody.create(mapper.writeValueAsString(payloadObject), MediaType.get(mediaType));
+    }
 
+    public Response get(String url, Map<String, String> headers) {
+        Request.Builder builder = createBaseRequestBuilder(url, headers);
+        builder.get();
+
+        return executeRequest(builder.build());
+    }
+
+    public Response executeRequest(Request request) {
         try {
             return client.newCall(request).execute();
         } catch (IOException e) {
-            System.out.println("An exception occurred while executing request " + url + " with method " + method + " and body " + requestBody.toString());
+            System.out.println("An exception occurred while executing request " + request.url());
             throw new RuntimeException(e);
         }
-
     }
 
-    private RequestBody createRequest(JSONObject requestPayload) {
-        return RequestBody.create(requestPayload.toString(), MediaType.get("application/json"));
+    private Request.Builder createBaseRequestBuilder(String url, Map<String, String> headers) {
+        Request.Builder builder = new Request.Builder().url(url);
+
+        baseHeaders.forEach((key, value) -> builder.addHeader(key,value));
+
+        if (headers != null) headers.forEach((key, value) -> builder.addHeader(key,value));
+
+        return builder;
     }
 
-    public Response post(String url, JSONObject payload, Map<String, String> defaultHeaders) {
-        return executeRequest(url, "POST", payload, defaultHeaders);
+    private RequestBody createRequest(String requestPayload) {
+        String mediaType = baseHeaders.get("Content-Type");
+
+        if (StringUtils.isEmpty(requestPayload)) {
+            return RequestBody.create("", MediaType.get(mediaType));
+        }
+
+        return RequestBody.create(requestPayload, MediaType.get(mediaType));
     }
+
 }
