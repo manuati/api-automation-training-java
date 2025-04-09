@@ -25,10 +25,10 @@ public class Main {
             bookingDates.setCheckout("2019-01-01");
             model.setBookingdates(bookingDates);
 
-            ResponseContainer<BookingResponse> responsePost = serviceBase.post("https://restful-booker.herokuapp.com/booking", model, null, BookingResponse.class);
+            ResponseContainer<BookingResponse> responsePost = serviceBase.post("/booking", model, null, BookingResponse.class);
             System.out.println("Made me a booking by POST: "+responsePost.getStatus().toString());
             // GET objeto unico
-            var responseGetSingle = serviceBase.getOne("https://restful-booker.herokuapp.com/booking/"+responsePost.getData().getBookingid(), null, BookingModel.class);
+            var responseGetSingle = serviceBase.getOne("/booking/"+responsePost.getData().getBookingid(), null, BookingModel.class);
             System.out.println("Got me a booking by GET simple: "+responsePost.getStatus());
 
             System.out.println("Done. Dedico esta ejecucion sin issues a la hermosa de mi novia <3");
