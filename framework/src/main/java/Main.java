@@ -7,9 +7,9 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("Why are you running me, bro?");
+        System.out.println("Please work...");
 
-        ServiceBase<String> serviceBase = new ServiceBase<>("");
+        ServiceBase serviceBase = new ServiceBase("");
         try {
             serviceBase.authenticate();
             serviceBase.authenticate();
@@ -25,10 +25,13 @@ public class Main {
             bookingDates.setCheckout("2019-01-01");
             model.setBookingdates(bookingDates);
 
-            ResponseContainer<BookingResponse> response = serviceBase.post("https://restful-booker.herokuapp.com/booking", model, null, BookingResponse.class);
+            ResponseContainer<BookingResponse> responsePost = serviceBase.post("https://restful-booker.herokuapp.com/booking", model, null, BookingResponse.class);
+            System.out.println("Made me a booking by POST: "+responsePost.getStatus().toString());
+            // GET objeto unico
+            var responseGetSingle = serviceBase.getOne("https://restful-booker.herokuapp.com/booking/"+responsePost.getData().getBookingid(), null, BookingModel.class);
+            System.out.println("Got me a booking by GET simple: "+responsePost.getStatus());
 
-            //var response = serviceBase.get("https://restful-booker.herokuapp.com/booking", objectMapper);
-            System.out.println("Got me a response for POST: "+response.getStatus());
+            System.out.println("Done. Dedico esta ejecucion sin issues a la hermosa de mi novia <3");
         } catch (Exception e) {
             System.out.println("Shit's fucked: "+e.getMessage());
             throw e;

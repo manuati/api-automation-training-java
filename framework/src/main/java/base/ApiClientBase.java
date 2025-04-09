@@ -34,18 +34,7 @@ public abstract class ApiClientBase {
         String mediaType = baseHeaders.get("Content-Type");
 
         if (payloadObject == null) {
-            return RequestBody.create("", MediaType.get(mediaType));
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        return RequestBody.create(mapper.writeValueAsString(payloadObject), MediaType.get(mediaType));
-    }
-
-    private RequestBody createRequest2(Object payloadObject) throws JsonProcessingException {
-        String mediaType = baseHeaders.get("Content-Type");
-
-        if (payloadObject == null) {
-            return RequestBody.create("", MediaType.get(mediaType));
+            return null;
         }
 
         ObjectMapper mapper = new ObjectMapper();

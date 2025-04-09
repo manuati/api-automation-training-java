@@ -13,12 +13,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiceBase<T> {
-    private Class<T> modelClass;
+public class ServiceBase {
 
     protected ApiClient apiClient;
     protected String url;
-    // TODO: Agregar instancia de configuracion default (Un mapa, imagino). Revisar bien como se usa en el framework original
     protected Map<String, String> defaultHeaders;
 
     public ServiceBase(String endpointPath) {
@@ -90,7 +88,7 @@ public class ServiceBase<T> {
         return new ResponseContainer<>(data, status, headers, responseTime);
     }
 
-    public ResponseContainer get(String url, Map<String, String> headers, Class responseClass) throws IOException {
+    public ResponseContainer getOne(String url, Map<String, String> headers, Class responseClass) throws IOException {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();
@@ -120,39 +118,4 @@ public class ServiceBase<T> {
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    protected T patch(String url) {
-        // Guardo el tiempo actual como comienzo
-        // Invoco el servicio GET en el 'url' usando el api client
-        // Guardo el tiempo actual como fin
-        // Construyo un objeto de respuesta haciendo uso de la respuesta de la api y los tiempos de inicio y fin
-        // Retorno el objeto creado
-        return null;
-    }
-
-    protected T delete(String url) {
-        // Guardo el tiempo actual como comienzo
-        // Invoco el servicio GET en el 'url' usando el api client
-        // Guardo el tiempo actual como fin
-        // Construyo un objeto de respuesta haciendo uso de la respuesta de la api y los tiempos de inicio y fin
-        // Retorno el objeto creado
-        return null;
-    }
-
-    protected T head(String url) {
-        // Guardo el tiempo actual como comienzo
-        // Invoco el servicio GET en el 'url' usando el api client
-        // Guardo el tiempo actual como fin
-        // Construyo un objeto de respuesta haciendo uso de la respuesta de la api y los tiempos de inicio y fin
-        // Retorno el objeto creado
-        return null;
-    }
-
-    protected T options(String url) {
-        // Guardo el tiempo actual como comienzo
-        // Invoco el servicio GET en el 'url' usando el api client
-        // Guardo el tiempo actual como fin
-        // Construyo un objeto de respuesta haciendo uso de la respuesta de la api y los tiempos de inicio y fin
-        // Retorno el objeto creado
-        return null;
-    }
 }
