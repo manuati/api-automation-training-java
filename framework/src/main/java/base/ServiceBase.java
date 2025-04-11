@@ -1,10 +1,9 @@
 package base;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.Response;
 import models.requests.CredentialModel;
 import models.responses.ResponseContainer;
 import models.responses.SessionResponse;
-import okhttp3.Response;
 import utils.ErrorMessages;
 import utils.StringUtils;
 
@@ -69,22 +68,21 @@ public class ServiceBase {
         return "token=" + token;
     }
 
-    private ResponseContainer buildResponse(Long endTime, Long startTime, Response response, Class responseClass) throws IOException {
+    private ResponseContainer buildResponse(Long endTime, Long startTime, Response response, Class responseClass) {
         Long responseTime = endTime - startTime;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        int status = response.code();
+        int status = response.statusCode();
         String headers = response.headers().toString();
 
         if (status < 200 || status >= 300) {
             return new ResponseContainer<>(null, status, headers, responseTime);
         }
 
-        var data = objectMapper.readValue(response.body().string(), responseClass);
+        var data = response.body().as(responseClass);
         return new ResponseContainer<>(data, status, headers, responseTime);
     }
 
-    protected ResponseContainer getOne(String url, Map<String, String> headers, Class responseClass) throws IOException {
+    protected ResponseContainer getOne(String url, Map<String, String> headers, Class responseClass) {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();
@@ -94,7 +92,17 @@ public class ServiceBase {
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    protected ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) throws IOException {
+    protected ResponseContainer getMany(String url, Map<String, String> headers, Class responseClass) {
+        if (headers == null) headers = defaultHeaders;
+
+        Long startTime = new Date().getTime();
+        Response response = apiClient.get(url, headers);
+        Long endTime = new Date().getTime();
+
+        return buildResponse(endTime, startTime, response, responseClass);
+    }
+
+    protected ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();
@@ -104,7 +112,7 @@ public class ServiceBase {
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    protected ResponseContainer put(String url, Object payload, Map<String, String> headers, Class responseClass) throws IOException {
+    protected ResponseContainer put(String url, Object payload, Map<String, String> headers, Class responseClass) {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();

@@ -13,7 +13,7 @@ public class BookingService extends ServiceBase {
         super("/booking");
     }
 
-    public ResponseContainer<BookingResponse> addBooking(BookingModel model, Map<String, String> headers) throws IOException {
+    public ResponseContainer<BookingResponse> addBooking(BookingModel model, Map<String, String> headers) {
         return this.post(this.url, model, headers, BookingResponse.class);
     }
 
@@ -21,4 +21,7 @@ public class BookingService extends ServiceBase {
         return this.getOne(this.url + "/" + bookingId, headers, BookingModel.class);
     }
 
+    public ResponseContainer<BookingModel> getBookings(Map<String, String> headers) {
+        return this.getMany(this.url, headers, BookingModel.class);
+    }
 }
