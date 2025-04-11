@@ -52,7 +52,7 @@ public class ServiceBase {
 
         CredentialModel credentialRequest = new CredentialModel(username, password);
 
-        ResponseContainer<SessionResponse> loginResponse = this.post("/auth", credentialRequest, null, SessionResponse.class);
+        ResponseContainer<SessionResponse> loginResponse = this.post(baseUrl() + "/auth", credentialRequest, null, SessionResponse.class);
 
         token = loginResponse.getData().getToken();
 
@@ -84,25 +84,21 @@ public class ServiceBase {
         return new ResponseContainer<>(data, status, headers, responseTime);
     }
 
-    private String createTargetUrl(String url) {
-        return baseUrl()+url;
-    }
-
-    public ResponseContainer getOne(String url, Map<String, String> headers, Class responseClass) throws IOException {
+    protected ResponseContainer getOne(String url, Map<String, String> headers, Class responseClass) throws IOException {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();
-        Response response = apiClient.get(createTargetUrl(url), headers);
+        Response response = apiClient.get(url, headers);
         Long endTime = new Date().getTime();
 
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    public ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) throws IOException {
+    protected ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) throws IOException {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();
-        Response response = apiClient.post(createTargetUrl(url), payload, headers);
+        Response response = apiClient.post(url, payload, headers);
         Long endTime = new Date().getTime();
 
         return buildResponse(endTime, startTime, response, responseClass);
@@ -112,7 +108,7 @@ public class ServiceBase {
         if (headers == null) headers = defaultHeaders;
 
         Long startTime = new Date().getTime();
-        Response response = apiClient.put(createTargetUrl(url), payload, headers);
+        Response response = apiClient.put(url, payload, headers);
         Long endTime = new Date().getTime();
 
         return buildResponse(endTime, startTime, response, responseClass);
