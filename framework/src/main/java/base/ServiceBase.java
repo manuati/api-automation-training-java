@@ -92,6 +92,7 @@ public class ServiceBase {
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
+    // TODO: Not working. Fix
     protected ResponseContainer getMany(String url, Map<String, String> headers, Class responseClass) {
         if (headers == null) headers = defaultHeaders;
 

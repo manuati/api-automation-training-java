@@ -31,8 +31,6 @@ public class Main {
             var responseGetSingle = bookingService.getBooking(responsePost.getData().getBookingid(), null);
             System.out.println("Got me a booking by GET simple: "+responsePost.getStatus());
 
-            var responseGetMany = bookingService.getBookings(null);
-
             System.out.println("Done. Dedico esta ejecucion sin issues a la hermosa de mi novia <3");
         } catch (Exception e) {
             System.out.println("Shit's fucked: "+e.getMessage());
