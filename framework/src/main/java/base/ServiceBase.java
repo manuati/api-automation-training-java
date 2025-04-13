@@ -6,6 +6,7 @@ import models.requests.CredentialModel;
 import models.responses.ResponseContainer;
 import models.responses.SessionResponse;
 import utils.ErrorMessages;
+import utils.MapUtils;
 import utils.StringUtils;
 
 import java.io.IOException;
@@ -82,30 +83,30 @@ public class ServiceBase {
     }
 
     protected ResponseContainer getOne(String url, Map<String, String> headers, Class responseClass) {
-        if (headers == null) headers = defaultHeaders;
+        Map finalHeaders = MapUtils.combineMaps(defaultHeaders, headers);
 
         Long startTime = new Date().getTime();
-        Response response = apiClient.get(url, headers);
+        Response response = apiClient.get(url, finalHeaders);
         Long endTime = new Date().getTime();
 
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
     protected ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) {
-        if (headers == null) headers = defaultHeaders;
+        Map finalHeaders = MapUtils.combineMaps(defaultHeaders, headers);
 
         Long startTime = new Date().getTime();
-        Response response = apiClient.post(url, payload, headers);
+        Response response = apiClient.post(url, payload, finalHeaders);
         Long endTime = new Date().getTime();
 
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
     protected ResponseContainer put(String url, Object payload, Map<String, String> headers, Class responseClass) {
-        if (headers == null) headers = defaultHeaders;
+        Map finalHeaders = MapUtils.combineMaps(defaultHeaders, headers);
 
         Long startTime = new Date().getTime();
-        Response response = apiClient.put(url, payload, headers);
+        Response response = apiClient.put(url, payload, finalHeaders);
         Long endTime = new Date().getTime();
 
         return buildResponse(endTime, startTime, response, responseClass);
