@@ -91,17 +91,6 @@ public class ServiceBase {
         return buildResponse(endTime, startTime, response, responseClass);
     }
 
-    // TODO: Not working. Fix
-    protected ResponseContainer getMany(String url, Map<String, String> headers, Class responseClass) {
-        if (headers == null) headers = defaultHeaders;
-
-        Long startTime = new Date().getTime();
-        Response response = apiClient.get(url, headers);
-        Long endTime = new Date().getTime();
-
-        return buildResponse(endTime, startTime, response, responseClass);
-    }
-
     protected ResponseContainer post(String url, Object payload, Map<String, String> headers, Class responseClass) {
         if (headers == null) headers = defaultHeaders;
 
