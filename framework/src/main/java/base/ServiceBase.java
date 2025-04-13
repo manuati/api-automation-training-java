@@ -33,7 +33,7 @@ public class ServiceBase {
         return url;
     }
 
-    public final void authenticate() throws RuntimeException, IOException {
+    public final void authenticate() {
         String username = envVars.get("USER");
         String password = envVars.get("PASSWORD");
 

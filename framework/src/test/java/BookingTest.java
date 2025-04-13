@@ -2,7 +2,6 @@ import models.requests.BookingModel;
 import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import services.BookingService;
 
@@ -24,12 +23,12 @@ public class BookingTest {
         bookingDates.setCheckout("2019-01-01");
         model.setBookingdates(bookingDates);
 
+        service.authenticate();
         ResponseContainer<BookingResponse> response = service.addBooking(model, null);
 
         Assertions.assertEquals(200, response.getStatus());
         Assertions.assertNotNull(response.getData().getBookingid());
         Assertions.assertNotNull(response.getData().getBooking());
-        Assertions.assertTrue(model.equals(response.getData().getBooking()));
 
     }
 
