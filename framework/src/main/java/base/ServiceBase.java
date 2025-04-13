@@ -1,5 +1,6 @@
 package base;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.restassured.response.Response;
 import models.requests.CredentialModel;
 import models.responses.ResponseContainer;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServiceBase {
+    protected static Dotenv envVars = Dotenv.configure().load();
 
     protected ApiClient apiClient;
     protected String url;
@@ -25,18 +27,15 @@ public class ServiceBase {
     }
 
     private static String baseUrl() {
-        String url = System.getenv("BASEURL");
+        String url = envVars.get("BASEURL");
         if (url == null) url = "";
 
         return url;
     }
 
-    /**
-     * Authenticates the user registered in the env vars to make calls against the API
-     */
     public final void authenticate() throws RuntimeException, IOException {
-        String username = System.getenv("USER");
-        String password = System.getenv("PASSWORD");
+        String username = envVars.get("USER");
+        String password = envVars.get("PASSWORD");
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             throw new RuntimeException(ErrorMessages.MISSING_USERNAME_PASSWORD);

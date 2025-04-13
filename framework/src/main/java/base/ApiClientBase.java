@@ -1,6 +1,4 @@
 package base;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.RestAssured;
 
 import java.util.HashMap;
