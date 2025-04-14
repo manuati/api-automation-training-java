@@ -45,7 +45,6 @@ public class ServiceBase {
         String token = SessionManager.getCachedToken(username, password);
         if (!StringUtils.isEmpty(token)) {
             saveCookieInHeaders(token);
-            System.out.println("Token refreshed");
             return;
         }
 
@@ -57,7 +56,6 @@ public class ServiceBase {
 
         SessionManager.storeToken(username, password, token);
         saveCookieInHeaders(token);
-        System.out.println("Token saved");
     }
 
     private void saveCookieInHeaders(String token) {

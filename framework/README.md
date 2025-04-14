@@ -1,225 +1,394 @@
-# API Automation Training
+# API Automation Framework (Java+JUnit)
 
-Welcome to the API Automation Training! This repository serves as the foundation for the training, providing a base API Automation Framework and step-by-step guidance for participants to build their API automation skills.
+Java API automation framework that does its job in a simple but effective way. It is designed to work with HTTP APIs but can be adapted to work with other protocols.
+Refer to the [original framework repo](https://github.com/damianpereira86/api-framework-ts-mocha) for examples. <font color="red">CAMBIAR A USAR EL URL DEL REPO FINAL</font>
 
-Find the API Framework documentation here.
+Libraries used:
 
-The training is designed for participants to fork this repository, develop their tests for a mock API, and create Pull Requests (PRs) for feedback and review. Mentors will review PRs regularly, providing feedback and guidance to ensure learning and progress.
-Training Objectives
+- REST Assured - API client
+- dotenv - Environment variables reader
+- JUnit 5 - Assertions
 
----
+This example uses the [Restful-booker](https://restful-booker.herokuapp.com/apidoc/index.html) API for demonstration purposes.
 
-1.  **Learn the basics of Java:**
-    Understand the fundamental features of Java, including classes, inheritage, interfaces, etc. These concepts will help you write better, more maintainable code for API automation.
+## Setup
 
-2.  **Understand the Base Framework:**
-    Familiarize yourself with the provided Java API Automation Framework using Maven? for test execution, Rest Assured for HTTP requests, and JUnit 5 for assertions. Learn how the framework is structured and how to extend it for your testing needs.
+Before you begin, make sure you have [Java](https://www.oracle.com/java/technologies/downloads/) and [Maven](https://maven.apache.org/) and installed on your machine.
 
-3.  **Learn API Automation Concepts:**
-    Grasp core concepts like service modeling (encapsulating API endpoints), organizing test cases, setting up environments with .env files, and strategies for functional and non-functional API testing.
+### Preparing your Environment
 
-4.  **Implement Test Automation:**
-    Use the base framework to write tests for real-world scenarios using the Petstore API. Implement robust, maintainable test scripts for CRUD operations and edge cases.
+Before starting with the setup, fork the repository and ensure you have a local copy of it following these steps, which will also guide you to set up your environment:
 
-5.  **Collaborate Effectively:**
-    Develop skills in using Git workflows for version control. Create feature branches, submit Pull Requests (PRs), and respond to feedback from mentors. Learn best practices for working in an asynchronous environment while maintaining high-quality contributions.
+1. **Fork the Repository**: Begin by forking the repository to your GitHub account. This creates your own copy of the project where you can make your changes.
 
----
+2. **Clone the Forked Repo**: Clone the forked repository to your local machine to start working on the changes.
 
-## Workflow and Guidelines
-
-1.    **Fork the Repository:** Fork this repo to your GitHub account and create a local clone.
-2.    **Add collaborators:** Add your mentors as collaborators to the repo.
-3.    **Branching:** Use feature branches (e.g., feature/milestone-1) for your changes.
-4.    **Pull Requests:** Create PRs for each milestone. Include a description of your changes and any challenges faced. Add your mentor as a reviewer.
-5.    **Code Reviews:** Mentors will review your PRs on demand, providing feedback.
-6.    **Feedback:** Address feedback promptly and resubmit your PR.
-
----
-
-## Training Milestones
-
-Before starting each milestone, create a feature branch with the name of the milestone, e.g.: feature/milestone-1 Follow each Milestone without reading the next one.
-
-## **Milestone 1: Setup and Explore. Service model creation and first tests**
-
-**Objective**:Set up the framework and understand its structure. Create a service model with methods for the Store service.
-
-1. Move to the framework folder:
-   ```bash
-    cd framework
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/YOUR_FORKED_REPO.git
     ```
 
-2. Install dependencies and set up your environment:
+3. Navigate to the project directory on your terminal. This is where the `src` folder is located.
+
+    ```bash
+    cd api-automation-training\framework
+    ```
+
+4. Install the necessary dependencies by running the following command in the root folder:
 
     ```bash
     mvn install
+    ```
+
+### Setting up your local environment
+
+The `.env` file is used to store environment variables that are important for running your tests. By default, this file is not tracked by Git to prevent sensitive data like usernames and passwords from being shared publicly.
+
+- Start by copying the `example.env` file provided in the project directory:
+
+    ```bash
     copy example.env .env
     ```
 
-    **Note:** If the execution does not work because you do not have Maven installed, go to https://maven.apache.org/ and follow the download and install instructions
+- Open the `.env` file in your preferred text editor and update the following properties with your local environment values:
 
-3. Update .env with the test API base URL:
     ```yaml
-    BASEURL=https://petstore.swagger.io/v2
+    BASEURL=api_base_url
+    USER=username
+    PASSWORD=password
     ```
-4. Explore the framework:
-    - Read the [API Automation Framework (TS+Mocha)](https://github.com/damianpereira86/api-automation-training/tree/main/framework#readme) Readme. <font color="red">AJUSTAR CUANDO TENGAMOS EL README MISMO DEL FRAMEWORK PRONTO</font>
-    - Understand the `ServiceBase` class and its usage in service models.
 
-5. Create a new `StoreService` extending `ServiceBase`.
-6. Implement methods in `StoreService` for the following operations:
-    - `GET /store/inventory`
-    - `POST /store/order`
-    - `GET /store/order/{orderId}`
-    - `DELETE /store/order/{orderId}`
-7. Add request and response models where appropriate.
-8. Write the **first test** for the following main scenario:
-    - Create an order and validate the response (`POST /store/order`).
+  Make sure to replace `api_base_url`, `username`, and `password` with the actual values you wish to use for testing. The `BASEURL` should point to the base URL of the API you are testing. `USER` and `PASSWORD` are used for scenarios where authentication is required.
+
+**Note:** it is crucial to **never** commit the values from the .env file or your personal environment variables to version control in a real project, as it can expose sensitive information.
+
+### Java Extensions <font color="red">QUEREMOS ALGO ACA?</font>
 
 
-**Deliverable**:
+### Running the tests
 
-- Create a PR with the change, adding a short description of your implementation process.
+```bash
+# Runs all tests
+mvn test
 
-### Milestone 2: CI/CD Pipeline
+# Runs tests by tag <font color="red">INVESTIGAR LOS EQUIVALENTES PARA JAVA</font>
+npm run smoke 
+npm run regression
+```
+<font color="red">REVISAR LUEGO DE DECIDIR POR LOS PLUGINS</font>
+### Eslint
 
-**Objective**: Configure and understand the GitHub Action to run tests on each PR and merge to `main`.
+You can use eslint with the help of the VS Code extension and with the following script.
 
-1. If you are not familiar with GitHub Actions, do some research to understand the basics, such as workflows, jobs, and steps. Refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
-2. Explore the `.github/workflows/main.yml` file to understand the workflow triggers and steps.
-3. Based on the research you did on Github Actions and your experience runing the tests in Visual Code, add the missing line in the main.yml file so the tests are run in the pipeline.
-4. Create a new environment called "Testing" in **Settings** > **Environments** > **New environment** <font color="red">ACTUALIZAR CON ALGO QUE TENGA SENTIDO</font>
-5. Configure the `BASEURL` as an environment variable with value: `https://petstore.swagger.io/v2`
+```bash
+npm run lint
+```
 
-**Deliverable**:
+### Prettier
 
-- Create a PR with a summary of what you learned and confirm that the workflow ran successfully in the Actions tab.
+Prettier is configured to run with eslint and to format the code on each save.
+In case you want run it separately use the folowing scripts:
 
----
+- Check for issues:
 
-### **Milestone 3: Complete the Create Order Suite**
+    ```bash
+    npm run prettier:check
+    ```
 
-**Objective**: Write tests for the rest of the Create Store test Suite.
+- Resolve issues:
 
-1. Write additional tests for the Create Order (`POST /store/order`) endpoint.
-2. Include positive and negative tests.
-3. Use tags like `@Smoke` or `@Regression` for test categorization. `@Smoke` tests should be the ones that are absolutely required to pass. <font color="red">BUSCAR EQUIVALENTES PARA JAVA. PREGUNTAR A GIULI SI NO FALTA AGREGAR ALGUNA LIBRERIA</font>
-4. In case a test fails due to a bug in the API, make sure to create the bug in the Issues tab and follow the [Bug Management documentation](https://github.com/damianpereira86/api-automation-training/tree/main/framework#bug-management). <font color="red">ACTUALIZAR CUANDO TENGA EL README DEL FRAMEWORK</font>
+    ```bash
+    npm run prettify
+    ```
 
-**Deliverable**:
+## Getting started
 
-- Create a PR with the tests and a brief summary of the scenarios covered.
+The idea behind this framework is to encapsulate endpoints on Service Models, for maintainability and reusability. You can think of Service Models as an analogy of Page Object Models for UI Automation.
 
----
+## Service Models
 
-### **Milestone 4: Verify the order was created**
+In this framework, Service Models are used to encapsulate the API endpoints you are testing. This abstraction allows for better maintainability and reusability of your test code. The concept here is somewhat similar to the Page Object Model used in UI Automation, where each service model represents a specific set of functionality provided by your API.
 
-**Objective**: Make a request to the get order endpoint to verify the order was actually created.
+### Understanding `ServiceBase`
 
-Note: when testing a POST endpoint you normally don't send the ID (it is generated automatically and returned to you in the response), but you might have noticed that this endpoint allows you to do that, and the order gets actually created with the ID you sent.
-But in case you didn't already notice, if you didn't provide the ID in the Create Order endpoint, it does not actually create an order (all the data is mocked). For this reason, if you did that and only asserted against the response, your positive tests should have passed. This is why is so important to verify the resources were actually created.
+The `ServiceBase` class is the foundation of all Service Models. It provides common functionality needed for making API requests and processing responses. When you create a new Service Model, it should extend `ServiceBase` to inherit these capabilities. This approach ensures consistency and reduces boilerplate code in your service models.
 
-1. For your positive tests, after the response assertions, obtain the created order ID from the response
-2. Make a request to the `GET /store/order/{orderId}` endpoint with the order ID
-3. Verify the response of the Get Order endpoint is 200, hence, the order was created successfully.
-4. Since the test where you didn't provide the ID for the POST in the first place should now be failing, follow step 4 in Milestone 5 for handling it.
+Here's what `ServiceBase` offers:
 
-**Deliverable**:
+- **API Client Management**: It initializes and holds an instance of the `ApiClient`, ensuring that all service models use the same API client setup.
+- **Base URL Configuration**: It dynamically sets the base URL for API requests using the `BASEURL` from your `.env` file. This allows for flexibility across different environments (e.g., development, staging, production).
+- **Authentication**: The `authenticate` method simplifies the process of authenticating with the API. Once called, it stores the authentication token in the request headers, so subsequent API calls are authenticated. Note that as explained below in the [Authentication](#authentication) section, this is specific to this API, and must be adapted to your use case.
+- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with.
 
-- Create a PR with the tests and a brief summary of the changes.
+### Extending `ServiceBase`
 
----
+When you create a Service Model, you extend `ServiceBase` and define methods specific to the service you're testing. For example, a `BookingService` might have methods like `getBooking` or `createBooking`. Each method uses the HTTP methods provided by `ServiceBase` to interact with the API.
 
-### **Milestone 5: Create Test Suites for the rest of the Store Service**
+Here's a simple example of a service model:
 
-**Objective**: Write tests for the rest of the Store service following the practices covered above.
+```tsx
+public class BookingService extends ServiceBase {
+    public BookingService() {
+        super("/booking");
+    }
 
-1. Write a test suite for each of the remaining endpoints in the Store Service:
-    - `GET /store/inventory`
-    - `GET /store/order/{orderId}`
-    - `DELETE /store/order/{orderId}`
+    public ResponseContainer<BookingResponse> addBooking(BookingModel model, Map<String, String> headers) {
+        return this.post(this.url, model, headers, BookingResponse.class);
+    }
 
-**Deliverable**:
+    public ResponseContainer<BookingModel> getBooking(Long bookingId, Map<String, String> headers) throws IOException {
+        return this.getOne(this.url + "/" + bookingId, headers, BookingModel.class);
+    }
 
-- **For each test suite**, create a PR with the tests and a brief summary of the scenarios covered.
+}
+```
 
----
+By extending ServiceBase, BookingService gains all the functionalities of making HTTP requests, handling authentication, and standardizing responses, allowing you to focus on the logic specific to the Booking service.
 
-### **Milestone 6: Pre and Post conditions: Hooks**
-<font color="red">CONSULTAR CON GIULI SI ESTE MILESTONE SE MANTIENE IGUAL; LOS BEFORE FUNCIONAN UN POCO DISTINTO EN JAVA DE LO QUE SUGIERE </font>
-**Objective**: Write hooks for pre and post-conditions.
+### Other Models
 
-Note: Remember that with this API, to create an order that you can actually use in the Get Order scenarios you must provide an order ID in the order creation.
+In addition to **Service Models**, you should declare **Request** and **Response** models as needed. For example, here is the BookingModel that will be used to deserialize the response from the endpoint above.
 
-1. Write a [before each](https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions) in the Get Order test suite.
-    1. Add a Before hook that creates an order by calling the right method in the StoreService model.
-    2. Obtain and store the order ID (the variable for this must be declared above the before hook).
-    3. Use the saved Order ID in the Get Order test.
-2. Write an after each hook in the Create Order test suite. This is very useful for cleaning up data after a test execution.
-    1. Declare an orderId variable on top of the test suite
-    2. After every positive test, update the orderId variable with the newly created Order ID.
-    3. Add an AfterEach hook that deletes the created orders by calling the right method in the StoreService model.
+```java
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    private Integer totalprice;
+    private Boolean depositpaid;
+    private BookingDates bookingdates;
+    private String additionalneeds;
 
-**Deliverable**:
+    public BookingModel() {
+    }
+    
+    // Getters and setters
+```
 
-- Create a PR with the changes and a brief summary.
+## Tests
 
----
+Next, you can create a simple test like this.
 
-### **Milestone 7: Verify endpoints basic Performance**
+```java
+    @Test
+    public void testGetBooking() {
+        service.authenticate();
+        ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
 
-**Objective**: Expand the test suite with basic performance test cases.
+        Assertions.assertEquals(200, response.getStatus());
+        Assertions.assertNotNull(response.getData());
+    }
+```
 
-1. Add performance checks for the endpoints (e.g., response time < 1000ms).
+Note the BookingModel on the generic getBooking function. With that in place, you can easily assert against the response body properties.
 
-**Deliverable**:
+```java
+@Test
+    public void createBookingSuccessful() {
+        BookingModel model = new BookingModel();
 
-- Create a PR with the new tests and details covered.
+        model.setFirstname("Jim");
+        model.setLastname("Brown");
+        model.setDepositpaid(true);
+        model.setTotalprice(111);
+        model.setAdditionalneeds("Breakfast");
+        BookingModel.BookingDates bookingDates = new BookingModel.BookingDates();
+        bookingDates.setCheckin("2018-01-01");
+        bookingDates.setCheckout("2019-01-01");
+        model.setBookingdates(bookingDates);
 
----
+        service.authenticate();
+        ResponseContainer<BookingResponse> response = service.addBooking(model, null);
+        
+        BookingModel responseModel = response.getData().getBooking();
+        
+        Assertions.assertEquals(200, response.getStatus());
+        Assertions.assertNotNull(response.getData().getBookingid());
+        Assertions.assertEquals(model.getFirstname(), responseModel.getFirstname());
+        Assertions.assertEquals(model.getLastname(), responseModel.getLastname());
+        Assertions.assertEquals(model.getDepositpaid(), responseModel.getDepositpaid());
+        Assertions.assertEquals(model.getTotalprice(), responseModel.getTotalprice());
+        Assertions.assertEquals(model.getAdditionalneeds(), responseModel.getAdditionalneeds());
+        Assertions.assertEquals(model.getBookingdates().getCheckin(), responseModel.getBookingdates().getCheckin());
+        Assertions.assertEquals(model.getBookingdates().getCheckout(), responseModel.getBookingdates().getCheckout());
+    }
+```
 
-### **Milestone 8: Extend to Other Services**
+In the example above, I am using a call to the addBooking endpoint to create the booking needed for the getBooking test, and then using the newly created booking to assert against it.
 
-**Objective**: Implement automation for additional services (`Pet` and `User`).
+## Performance
 
-1. Repeat the previous steps for **Pet** and **User** services.
+Request duration is measured and saved to the responseTime property of the response object. Therefore, you can add assertions to check the response time of each request.
 
-**Deliverable**:
+```java
+@Test
+public void getBookingSuccessfulLessThan1000ms() {
+        service.authenticate();
+        ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
 
-- Create separate PRs for each suite across both services.
+        Assertions.assertEquals(200, response.getStatus());
+        Assertions.assertTrue(response.getResponseTime() < 1000);
+}
+```
 
----
+This makes adding simple but powerful performance checks to your API automation suite very easy.
 
-### **Milestone 9: Authentication**
+## Authentication
 
-**Objective**: Implement the authenticate method.
+The authentication process depends on the method required by the API, but in most cases, it involves sending tokens in the request headers.
 
-1. Go to the ServiceBase class and find the example `authenticate` method
-2. Read the method and the [documentation](https://github.com/damianpereira86/api-automation-training/tree/main/framework#authentication) to understand what it does. <font color="red">AJUSTAR CON LA DOC NUEVA DEL FRAMEWORK</font>
-3. Modify the authenticate method implementation
-    1. Add the USER and PASSWORD environment variables to the .env file
-    2. Modify line 46 <font color="red">BUSCAR LA LINEA CORRECTA</font> to call the `GET /user/login` endpoint. Note that this endpoint is a GET, and expects two params instead of a payload as in the example.
-    3. Set the obtained Session ID correctly according to the API documentation. Check the [Delete Pet](https://petstore.swagger.io/#/pet/deletePet) request for information on how to set the session ID.
-    4. Modify the Delete Pet test to call the authenticate method from a before hook.
+In this repository, the API uses an `/auth` endpoint to obtain a token, which is then sent in the request headers as a cookie. To streamline this process, I’ve added an `authenticate()` method in the `ServiceBase` class, making it easy to authenticate with the API.
 
-**Deliverable**:
+Additionally, the token is cached so that subsequent calls to `authenticate()` from any service do not result in unnecessary requests to the server.
 
-- Create a PR with the new authenticate method and the modified Delete.
+Here’s the implementation of the `authenticate()` method:
 
----
+```java
+public final void authenticate() {
+        String username = envVars.get("USER");
+        String password = envVars.get("PASSWORD");
 
-## Schedule and Communication
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            throw new RuntimeException(ErrorMessages.MISSING_USERNAME_PASSWORD);
+        }
 
-- **Weekly Reviews**: Mentors will provide feedback and approval for completed milestones.
-- **Support Channels**: Chat with your mentors for queries and discussions.
+        String token = SessionManager.getCachedToken(username, password);
+        if (!StringUtils.isEmpty(token)) {
+            saveCookieInHeaders(token);
+            return;
+        }
 
----
+        CredentialModel credentialRequest = new CredentialModel(username, password);
 
-## Tips for Success
+        ResponseContainer<SessionResponse> loginResponse = this.post(baseUrl() + "/auth", credentialRequest, null, SessionResponse.class);
 
-1. **Engage Actively**: Reach out for help if you're stuck or need clarification.
-2. **Focus on Quality**: Write clean, maintainable code and meaningful tests.
-3. **Learn from Feedback**: Incorporate mentor feedback to refine your implementation.
+        token = loginResponse.getData().getToken();
 
----
+        SessionManager.storeToken(username, password, token);
+        saveCookieInHeaders(token);
+}
+```
+
+Then you can use it on the services that require authentication, like in the before hook below.
+
+```java
+@BeforeEach
+public void setup() {
+    service.authenticate();
+}
+```
+
+## Bug Management
+
+I have found that the strategy for dealing with open bugs on an automation project is not a solved problem, and you can find different views on this. This repo has an approach I have used in different projects, but feel free to adapt it to yours.
+
+In this case, bugs are skipped while open, to maintain a green pipeline. The issue with this approach is that you have to have a process in place to un-skip them when they are fixed.
+
+To do that, I add a comment on top of the test before skipping it, containing the link to the test and a visual indication with the help of the TODO Highlight extension.
+
+To avoid unwanted skipped tests, I set an eslint rule to not allow them. Hence, besides the BUG comment, I have to add one to disable eslint for the next line. This makes it easier not to forget skipped or focused tests while helping the PR review process for the reviewer (a disabled eslint rule must have a good justification)
+
+![Bug](./images/bug.png)
+
+## CI / CD
+
+This repository utilizes GitHub Actions for continuous integration and delivery (CI/CD). Our pipeline is configured to run all tests on each Pull Request or Merge to the main branch. Here is what typically happens:
+
+1. **Linting**: The pipeline runs ESLint to check for syntax errors and enforce code style guidelines. <font color="red">BUSCAR ALTERNATIVA DE JAVA</font>
+2. **Testing**: It executes the automated tests defined in the repository.
+3. **Deployment (Optional)**: If all tests pass, the pipeline can automatically deploy your code to the production environment.
+
+Check the [Actions](https://github.com/damianpereira86/api-framework-ts-mocha/actions) tab to see passed and failed pipelines. <font color="red">QUEREMOS ALTERNATIVAS?</font>
+
+![Pipeline](./images/cicd.png)
+
+Ensure that you configure any necessary environment variables and secrets. These can be managed in the repository’s **Settings** under **Secrets and variables**. <font color="red">ESTO ES DE VS CODE? O DE GITHUB?</font>
+1. Repository Variables: Go to Settings > Secrets and variables > Actions > Variables. (e.g., BASEURL)
+2. Repository Secrets: Go to Settings > Secrets and variables > Actions > Secrets.(e.g., USER and PASSWORD)
+
+You can customize the CI/CD pipeline to suit your project's needs. For example, you can adjust which branches trigger the pipeline, add steps for deployment, or configure notifications.
+
+To get started with GitHub Actions in your project, check out the `.github/workflows` directory in this repository. Here, you'll find the workflow files that define our CI/CD processes. You can modify these files to change the pipeline or add new workflows.
+
+See branch `features/two-step-pipeline` as an example of a pipeline that do the following: <font color="red">HACEMOS UNA RAMA ASI?</font>
+1. Runs the Smoke tests, and fails in case any test fails,
+2. Runs the Regression tests, that do not make the pipeline fail.
+
+### Linting in the pipeline
+As mentioned above, this job will run ESLint before running the tests. In the following screenshot, the pipeline failed due to an eslint error.
+
+![Eslint error](./images/eslint-error.png)
+
+For more detailed examples and advanced features, refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
+
+## Extensions
+
+This framework has been extended in the past with different features such as:
+
+- Reporter
+- Schema validation
+- Improved Logging
+- Database integration
+- And so on...
+
+But each of them depends on the project needs, the tools of choice, etc. Hence, I’ll be adding examples of possible extensions that could be useful for some of you, while leaving this repo as light and starightforward as possible.
+
+## Next steps
+
+Now it’s time to use it. Go ahead and explore the test examples in this repo and adapt it to your use case. I’m sure there are much better ways to tackle some of the features of this framework, and I will be more than happy to hear them and include them in the repo. Or better, you can include them yourself!
+
+## Contact/Support
+
+If you have any questions, encounter any issues, or simply want to provide feedback regarding this project, I'm here to help and listen!
+
+Here are a few ways you can reach out for support or assistance:
+
+- **Submit an Issue**: If you find any bugs or issues, feel free to open an issue on the [GitHub issues page](https://github.com/damianpereira86/api-framework-ts-mocha/issues). Please provide as much detail as possible to help me understand and address the problem quickly. <font color="red">CAMBIAR A LA PAGINA DE GIULI O QUITAR</font>
+
+- **Discussions**: For questions, suggestions, or general discussions about the project, please use the [Discussions](https://github.com/damianpereira86/api-framework-ts-mocha/discussions) section of the GitHub repository. This is a great place to connect with other users and contributors, share ideas, and get advice. <font color="red">IGUAL ACA</font>
+
+- **Email**: If you prefer direct communication, you can email me at [giulianabentancor@gmail.com](mailto:giulianabentancor@gmail.com). I'll try to respond as promptly as possible.
+
+## Contribution Guidelines
+
+I welcome contributions from everyone and value your input and ideas. Here's how you can contribute:
+
+1. **Fork the Repository**: Begin by forking the repository to your GitHub account. This creates your own copy of the project where you can make your changes.
+
+2. **Clone the Forked Repo**: Clone the forked repository to your local machine to start working on the changes.
+
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/YOUR_FORKED_REPO.git
+    ```
+
+3. **Create a New Branch**: Create a new branch on your local repository for each set of changes you want to make. This keeps your modifications organized and separate from the main project.
+
+    ```bash
+    git checkout -b your-new-branch-name
+    ```
+
+4. **Make Your Changes**: Implement your changes, fix a bug, add a new feature, or update documentation as needed in your new branch.
+
+5. **Commit Your Changes**: Commit your changes with a clear and descriptive commit message. This message should explain what you've done and why.
+
+    ```bash
+    git commit -m "Add a concise but descriptive commit message"
+    ```
+
+6. **Push Changes to Your Fork**: Push your changes to your fork on GitHub.
+
+    ```bash
+    git push origin your-new-branch-name
+    ```
+
+7. **Submit a Pull Request**: Go to your fork on GitHub and click the 'New pull request' button. Select the original repository as the base and your branch as the compare. Fill in the pull request with a title and description that explains your changes.
+
+8. **Wait for Review**: Wait for the review of your changes. Be ready to make additional changes based on the feedback.
+
+9. **Merge**: Once your changes have been approved, they will be merged into the main project.
+
+Please ensure that your code adheres to the project's standards and has passed all tests.
+
+I look forward to your contributions. Thank you!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
