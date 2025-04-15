@@ -3,6 +3,7 @@ import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import services.BookingService;
 
@@ -17,6 +18,7 @@ public class BookingTest {
     }
 
     @Test
+    @Tag("Unit")
     public void createBookingSuccessful() {
         BookingModel model = new BookingModel();
 
@@ -46,6 +48,7 @@ public class BookingTest {
     }
 
     @Test
+    @Tag("Unit")
     public void getBookingSuccessful() {
         ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
 
@@ -54,6 +57,7 @@ public class BookingTest {
     }
 
     @Test
+    @Tag("Unit")
     public void getBookingSuccessfulLessThan1000ms() {
         service.authenticate();
         ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
