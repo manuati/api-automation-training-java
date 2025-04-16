@@ -10,7 +10,7 @@ Training Objectives
 ---
 
 1.  **Learn the basics of Java:**
-    Understand the fundamental features of Java, including classes, inheritage, interfaces, etc. These concepts will help you write better, more maintainable code for API automation. <font color="red">LO AJUSTE AL TUN TUN, REVISAR</font>
+    Understand the fundamental features of Java, including classes, inheritance, interfaces, etc. These concepts will help you write better, more maintainable code for API automation. <font color="red">LO AJUSTE AL TUN TUN, REVISAR</font>
 
 2.  **Understand the Base Framework:**
     Familiarize yourself with the provided Java API Automation Framework using Maven for test execution, Rest Assured for HTTP requests, and JUnit 5 for assertions. Learn how the framework is structured and how to extend it for your testing needs.

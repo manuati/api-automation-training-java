@@ -70,9 +70,9 @@ The `.env` file is used to store environment variables that are important for ru
 # Runs all tests
 mvn test
 
-# Runs tests by tag <font color="red">INVESTIGAR LOS EQUIVALENTES PARA JAVA</font>
-npm run smoke 
-npm run regression
+# Runs tests by tag
+mvn test run smoke -Dgroups="Smoke"
+mvn test run smoke -Dgroups="Regression"
 ```
 <font color="red">REVISAR LUEGO DE DECIDIR POR LOS PLUGINS</font>
 ### Eslint
@@ -102,11 +102,11 @@ In case you want run it separately use the folowing scripts:
 
 ## Getting started
 
-The idea behind this framework is to encapsulate endpoints on Service Models, for maintainability and reusability. You can think of Service Models as an analogy of Page Object Models for UI Automation.
+The idea behind this framework is to encapsulate endpoints on Service Models, for maintainability and re-usability. You can think of Service Models as an analogy of Page Object Models for UI Automation.
 
 ## Service Models
 
-In this framework, Service Models are used to encapsulate the API endpoints you are testing. This abstraction allows for better maintainability and reusability of your test code. The concept here is somewhat similar to the Page Object Model used in UI Automation, where each service model represents a specific set of functionality provided by your API.
+In this framework, Service Models are used to encapsulate the API endpoints you are testing. This abstraction allows for better maintainability and re-usability of your test code. The concept here is somewhat similar to the Page Object Model used in UI Automation, where each service model represents a specific set of functionality provided by your API.
 
 ### Understanding `ServiceBase`
 
@@ -117,7 +117,7 @@ Here's what `ServiceBase` offers:
 - **API Client Management**: It initializes and holds an instance of the `ApiClient`, ensuring that all service models use the same API client setup.
 - **Base URL Configuration**: It dynamically sets the base URL for API requests using the `BASEURL` from your `.env` file. This allows for flexibility across different environments (e.g., development, staging, production).
 - **Authentication**: The `authenticate` method simplifies the process of authenticating with the API. Once called, it stores the authentication token in the request headers, so subsequent API calls are authenticated. Note that as explained below in the [Authentication](#authentication) section, this is specific to this API, and must be adapted to your use case.
-- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with.
+- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with. <font color="red">SEGUN LA DOC, SERVICE BASE DEBERIA TENER TODOS LOS METODOS DE REST. QUEREMOS MODIFICAR ACA PARA ACLARAR QUE ALGUNOS METODOS DEBERIAN SER IMPLEMENTADOS POR LOS ESTUDIANTES?</font>
 
 ### Extending `ServiceBase`
 
@@ -125,7 +125,7 @@ When you create a Service Model, you extend `ServiceBase` and define methods spe
 
 Here's a simple example of a service model:
 
-```tsx
+```java
 public class BookingService extends ServiceBase {
     public BookingService() {
         super("/booking");
@@ -135,7 +135,7 @@ public class BookingService extends ServiceBase {
         return this.post(this.url, model, headers, BookingResponse.class);
     }
 
-    public ResponseContainer<BookingModel> getBooking(Long bookingId, Map<String, String> headers) throws IOException {
+    public ResponseContainer<BookingModel> getBooking(Long bookingId, Map<String, String> headers) {
         return this.getOne(this.url + "/" + bookingId, headers, BookingModel.class);
     }
 
@@ -160,7 +160,7 @@ In addition to **Service Models**, you should declare **Request** and **Response
     public BookingModel() {
     }
     
-    // Getters and setters
+    // Getter and setter methods
 ```
 
 ## Tests
@@ -171,7 +171,7 @@ Next, you can create a simple test like this.
     @Test
     public void testGetBooking() {
         service.authenticate();
-        ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
+        ResponseContainer<BookingModel> response = service.getBooking(1l, null);
 
         Assertions.assertEquals(200, response.getStatus());
         Assertions.assertNotNull(response.getData());
@@ -319,7 +319,7 @@ As mentioned above, this job will run ESLint before running the tests. In the fo
 
 For more detailed examples and advanced features, refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
 
-## Extensions
+## Extensions <font color="red">SACAR ESTA PARTE?</font>
 
 This framework has been extended in the past with different features such as:
 

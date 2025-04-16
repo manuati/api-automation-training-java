@@ -1,10 +1,10 @@
+package services;
+
 import models.requests.BookingModel;
 import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 import services.BookingService;
 
 
@@ -19,6 +19,7 @@ public class BookingTest {
 
     @Test
     @Tag("Unit")
+    @DisplayName("Create Booking - Successful")
     public void createBookingSuccessful() {
         BookingModel model = new BookingModel();
 
@@ -49,18 +50,20 @@ public class BookingTest {
 
     @Test
     @Tag("Unit")
+    @DisplayName("Get Booking - Successful")
     public void getBookingSuccessful() {
-        ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
+        ResponseContainer<BookingModel> response = service.getBooking(1l, null);
 
         Assertions.assertEquals(200, response.getStatus());
         Assertions.assertNotNull(response.getData());
     }
 
     @Test
-    @Tag("Unit")
+    @Tag("Smoke")
+    @DisplayName("Get Booking - Under 1000ms")
     public void getBookingSuccessfulLessThan1000ms() {
         service.authenticate();
-        ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
+        ResponseContainer<BookingModel> response = service.getBooking(1l, null);
 
         Assertions.assertEquals(200, response.getStatus());
         Assertions.assertTrue(response.getResponseTime() < 1000);
