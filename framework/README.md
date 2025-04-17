@@ -74,13 +74,16 @@ mvn test
 mvn test run smoke -Dgroups="Smoke"
 mvn test run smoke -Dgroups="Regression"
 ```
-<font color="red">REVISAR LUEGO DE DECIDIR POR LOS PLUGINS</font>
-### Eslint
+<font color="red">VALIDAR CON GIULI</font>
+### Checkstyle
 
-You can use eslint with the help of the VS Code extension and with the following script.
+You can use Checkstyle with the help Maven to validate your code and make sure you follow pre-defined guidelines set in [checkstyle.xml](checkstyle.xml).
+
+This project is configured to have some light and recommended checks. If you wish to expand the rules being enforced, [you can read available rules here](https://checkstyle.sourceforge.io/checks.html).
+More documentation about it [can be found here](https://checkstyle.sourceforge.io/config.html).
 
 ```bash
-npm run lint
+mvn checkstyle:checkstyle
 ```
 
 ### Prettier
