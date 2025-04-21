@@ -17,9 +17,9 @@
         <dotenv-java.version>3.2.0</dotenv-java.version>
         <junit.version>5.11.4</junit.version>
         <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
-        <!-- -->
         <checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
         <checkstyle.version>8.41</checkstyle.version>
+        <prettier.version>0.8</prettier.version>
     </properties>
 
     <dependencies>
@@ -56,11 +56,32 @@
             <version>${maven-checkstyle-plugin.version}</version>
             <scope>maven-plugin</scope>
         </dependency>
+        <dependency>
+            <groupId>com.hubspot.maven.plugins</groupId>
+            <artifactId>prettier-maven-plugin</artifactId>
+            <!-- Find the latest version at https://github.com/jhipster/prettier-java/releases -->
+            <version>${prettier.version}</version>
+        </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.hubspot.maven.plugins</groupId>
+                <artifactId>prettier-maven-plugin</artifactId>
+                <version>${prettier.version}</version>
+<!--                UNCOMMENT THIS IF YOU WISH TO RUN PRETTIER TO CHECK THE CODE WHEN RUNNING THE VALIDATE GOAL-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>validate</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -76,7 +97,7 @@
                         <version>${checkstyle.version}</version>
                     </dependency>
                 </dependencies>
-<!--                UNCOMMENT THIS IF YOU WISH TO RUN CHECKSTYLE WHEN RUNNING DEFINED GOAL-->
+<!--                UNCOMMENT THIS IF YOU WISH TO RUN CHECKSTYLE WHEN RUNNING THE VALIDATE GOAL -->
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <id>validate</id>-->
@@ -86,10 +107,6 @@
 <!--                        </goals>-->
 <!--                    </execution>-->
 <!--                </executions>-->
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

@@ -10,7 +10,7 @@ Training Objectives
 ---
 
 1.  **Learn the basics of Java:**
-    Understand the fundamental features of Java, including classes, inheritance, interfaces, etc. These concepts will help you write better, more maintainable code for API automation. <font color="red">LO AJUSTE AL TUN TUN, REVISAR</font>
+    Understand the fundamental features of Java, including classes, inheritance, etc. These concepts will help you write better, more maintainable code for API automation.
 
 2.  **Understand the Base Framework:**
     Familiarize yourself with the provided Java API Automation Framework using Maven for test execution, Rest Assured for HTTP requests, and JUnit 5 for assertions. Learn how the framework is structured and how to extend it for your testing needs.
@@ -19,7 +19,7 @@ Training Objectives
     Grasp core concepts like service modeling (encapsulating API endpoints), organizing test cases, setting up environments with .env files, and strategies for functional and non-functional API testing.
 
 4.  **Implement Test Automation:**
-    Use the base framework to write tests for real-world scenarios using the Petstore API. Implement robust, maintainable test scripts for CRUD operations and edge cases.
+    Use the base framework to write tests for real-world scenarios using the Booking API. Implement robust, maintainable test scripts for CRUD operations and edge cases.
 
 5.  **Collaborate Effectively:**
     Develop skills in using Git workflows for version control. Create feature branches, submit Pull Requests (PRs), and respond to feedback from mentors. Learn best practices for working in an asynchronous environment while maintaining high-quality contributions.
@@ -32,7 +32,7 @@ Training Objectives
 2.    **Add collaborators:** Add your mentors as collaborators to the repo.
 3.    **Branching:** Use feature branches (e.g., feature/milestone-1) for your changes.
 4.    **Pull Requests:** Create PRs for each milestone. Include a description of your changes and any challenges faced. Add your mentor as a reviewer.
-5.    **Code Reviews:** Mentors will review your PRs on demand, providing feedback.
+5.    **Code Reviews:** Ask someone to review your PRs on demand, providing feedback.
 6.    **Feedback:** Address feedback promptly and resubmit your PR.
 
 ---
@@ -61,13 +61,13 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 3. Update .env with the test API base URL:
     ```yaml
-    BASEURL=https://petstore.swagger.io/v2
+    BASEURL=https://restful-booker.herokuapp.com
     ```
 4. Explore the framework:
     - Read the [API Automation Framework](https://github.com/damianpereira86/api-automation-training/tree/main/framework#readme) Readme. <font color="red">AJUSTAR CUANDO TENGAMOS EL README MISMO DEL FRAMEWORK PRONTO</font>
     - Understand the `ServiceBase` class and its usage in service models.
 
-5. Create a new `StoreService` extending `ServiceBase`.
+5. Create a new `StoreService` extending `ServiceBase`. <font color="red">CAMBIAR A LA API DE BOOKING</font>
 6. Implement methods in `StoreService` for the following operations:
     - `GET /store/inventory`
     - `POST /store/order`
@@ -82,7 +82,7 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 - Create a PR with the change, adding a short description of your implementation process.
 
-### Milestone 2: CI/CD Pipeline
+### Milestone 2: CI/CD Pipeline <font color="red">CREAR CARPETA .GITHUB COMO TIENE DAMIAN EN SU PROYECTO</font>
 
 **Objective**: Configure and understand the GitHub Action to run tests on each PR and merge to `main`.
 
@@ -105,7 +105,6 @@ Before starting each milestone, create a feature branch with the name of the mil
 1. Write additional tests for the Create Order (`POST /store/order`) endpoint.
 2. Include positive and negative tests.
 3. Use tags like `@Tag("Smoke")` or `@Tag("Regression")` for test categorization. `@Tag("Smoke")` tests should be the ones that are absolutely required to pass.
-4. In case a test fails due to a bug in the API, make sure to create the bug in the Issues tab and follow the [Bug Management documentation](https://github.com/damianpereira86/api-automation-training/tree/main/framework#bug-management). <font color="red">ACTUALIZAR CUANDO TENGA EL README DEL FRAMEWORK</font>
 
 **Deliverable**:
 
@@ -190,31 +189,6 @@ Note: Remember that with this API, to create an order that you can actually use 
 **Deliverable**:
 
 - Create separate PRs for each suite across both services.
-
----
-
-### **Milestone 9: Authentication**
-
-**Objective**: Implement the authenticate method.
-
-1. Go to the ServiceBase class and find the example `authenticate` method
-2. Read the method and the [documentation](https://github.com/damianpereira86/api-automation-training/tree/main/framework#authentication) to understand what it does. <font color="red">AJUSTAR CON LA DOC NUEVA DEL FRAMEWORK</font>
-3. Modify the authenticate method implementation
-    1. Add the USER and PASSWORD environment variables to the .env file
-    2. Modify line 53 to call the `GET /user/login` endpoint. Note that this endpoint is a GET, and expects two params instead of a payload as in the example.
-    3. Set the obtained Session ID correctly according to the API documentation. Check the [Delete Pet](https://petstore.swagger.io/#/pet/deletePet) request for information on how to set the session ID.
-    4. Modify the Delete Pet test to call the authenticate method from a before hook.
-
-**Deliverable**:
-
-- Create a PR with the new authenticate method and the modified Delete.
-
----
-
-## Schedule and Communication
-
-- **Weekly Reviews**: Mentors will provide feedback and approval for completed milestones.
-- **Support Channels**: Chat with your mentors for queries and discussions.
 
 ---
 

@@ -5,10 +5,8 @@ import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
 import org.junit.jupiter.api.*;
 
-import services.BookingService;
 
-
-public class BookingTest {
+public class BookingPostTest {
 
     private BookingService service = new BookingService();
 
@@ -46,27 +44,6 @@ public class BookingTest {
         Assertions.assertEquals(model.getAdditionalneeds(), responseModel.getAdditionalneeds());
         Assertions.assertEquals(model.getBookingdates().getCheckin(), responseModel.getBookingdates().getCheckin());
         Assertions.assertEquals(model.getBookingdates().getCheckout(), responseModel.getBookingdates().getCheckout());
-    }
-
-    @Test
-    @Tag("Unit")
-    @DisplayName("Get Booking - Successful")
-    public void getBookingSuccessful() {
-        ResponseContainer<BookingModel> response = service.getBooking(1l, null);
-
-        Assertions.assertEquals(200, response.getStatus());
-        Assertions.assertNotNull(response.getData());
-    }
-
-    @Test
-    @Tag("Smoke")
-    @DisplayName("Get Booking - Under 1000ms")
-    public void getBookingSuccessfulLessThan1000ms() {
-        service.authenticate();
-        ResponseContainer<BookingModel> response = service.getBooking(1l, null);
-
-        Assertions.assertEquals(200, response.getStatus());
-        Assertions.assertTrue(response.getResponseTime() < 1000);
     }
 
 }

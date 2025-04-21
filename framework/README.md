@@ -1,13 +1,12 @@
 # API Automation Framework (Java+JUnit)
 
 Java API automation framework that does its job in a simple but effective way. It is designed to work with HTTP APIs but can be adapted to work with other protocols.
-Refer to the [original framework repo](https://github.com/damianpereira86/api-framework-ts-mocha) for examples. <font color="red">CAMBIAR A USAR EL URL DEL REPO FINAL</font>
 
 Libraries used:
 
-- REST Assured - API client
+- REST Assured - HTTP client
 - dotenv - Environment variables reader
-- JUnit 5 - Assertions
+- JUnit 5 - Assertions and test runner
 
 This example uses the [Restful-booker](https://restful-booker.herokuapp.com/apidoc/index.html) API for demonstration purposes.
 
@@ -61,20 +60,8 @@ The `.env` file is used to store environment variables that are important for ru
 
 **Note:** it is crucial to **never** commit the values from the .env file or your personal environment variables to version control in a real project, as it can expose sensitive information.
 
-### Java Extensions <font color="red">QUEREMOS ALGO ACA?</font>
+### Maven Plugins <font color="red">AGREGAR PRETTIER Y CHECKSTYLE</font>
 
-
-### Running the tests
-
-```bash
-# Runs all tests
-mvn test
-
-# Runs tests by tag
-mvn test run smoke -Dgroups="Smoke"
-mvn test run smoke -Dgroups="Regression"
-```
-<font color="red">VALIDAR CON GIULI</font>
 ### Checkstyle
 
 You can use Checkstyle with the help Maven to validate your code and make sure you follow pre-defined guidelines set in [checkstyle.xml](checkstyle.xml).
@@ -93,15 +80,27 @@ In case you want run it separately use the folowing scripts:
 
 - Check for issues:
 
-    ```bash
-    npm run prettier:check
-    ```
+```bash
+mvn prettier:check
+```
 
 - Resolve issues:
 
-    ```bash
-    npm run prettify
-    ```
+```bash
+mvn prettier:write
+```
+
+### Running the tests
+
+```bash
+# Runs all tests
+mvn test
+
+# Runs tests by tag
+mvn test -Dgroups="Smoke"
+mvn test -Dgroups="Regression"
+```
+<font color="red">VER PORQUE HAY UNA DIFERENCIA DE CORRERLO DESDE EL README Y CONSOLA</font>
 
 ## Getting started
 
@@ -120,7 +119,8 @@ Here's what `ServiceBase` offers:
 - **API Client Management**: It initializes and holds an instance of the `ApiClient`, ensuring that all service models use the same API client setup.
 - **Base URL Configuration**: It dynamically sets the base URL for API requests using the `BASEURL` from your `.env` file. This allows for flexibility across different environments (e.g., development, staging, production).
 - **Authentication**: The `authenticate` method simplifies the process of authenticating with the API. Once called, it stores the authentication token in the request headers, so subsequent API calls are authenticated. Note that as explained below in the [Authentication](#authentication) section, this is specific to this API, and must be adapted to your use case.
-- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with. <font color="red">SEGUN LA DOC, SERVICE BASE DEBERIA TENER TODOS LOS METODOS DE REST. QUEREMOS MODIFICAR ACA PARA ACLARAR QUE ALGUNOS METODOS DEBERIAN SER IMPLEMENTADOS POR LOS ESTUDIANTES?</font>
+- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with. 
+- <font color="red">IMPLEMENTAR LOS QUE FALTAN</font>
 
 ### Extending `ServiceBase`
 
@@ -279,23 +279,11 @@ public void setup() {
 }
 ```
 
-## Bug Management
-
-I have found that the strategy for dealing with open bugs on an automation project is not a solved problem, and you can find different views on this. This repo has an approach I have used in different projects, but feel free to adapt it to yours.
-
-In this case, bugs are skipped while open, to maintain a green pipeline. The issue with this approach is that you have to have a process in place to un-skip them when they are fixed.
-
-To do that, I add a comment on top of the test before skipping it, containing the link to the test and a visual indication with the help of the TODO Highlight extension.
-
-To avoid unwanted skipped tests, I set an eslint rule to not allow them. Hence, besides the BUG comment, I have to add one to disable eslint for the next line. This makes it easier not to forget skipped or focused tests while helping the PR review process for the reviewer (a disabled eslint rule must have a good justification)
-
-![Bug](./images/bug.png)
-
-## CI / CD
+## CI / CD  <font color="red">DEFINIRLO PARA NOSOTROS CON GITHUB ACTIONS</font>
 
 This repository utilizes GitHub Actions for continuous integration and delivery (CI/CD). Our pipeline is configured to run all tests on each Pull Request or Merge to the main branch. Here is what typically happens:
 
-1. **Linting**: The pipeline runs ESLint to check for syntax errors and enforce code style guidelines. <font color="red">BUSCAR ALTERNATIVA DE JAVA</font>
+1. **Linting**: The pipeline runs ESLint to check for syntax errors and enforce code style guidelines.
 2. **Testing**: It executes the automated tests defined in the repository.
 3. **Deployment (Optional)**: If all tests pass, the pipeline can automatically deploy your code to the production environment.
 
@@ -321,16 +309,6 @@ As mentioned above, this job will run ESLint before running the tests. In the fo
 ![Eslint error](./images/eslint-error.png)
 
 For more detailed examples and advanced features, refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
-
-## Extensions <font color="red">SACAR ESTA PARTE?</font>
-
-This framework has been extended in the past with different features such as:
-
-- Reporter
-- Schema validation
-- Improved Logging
-- Database integration
-- And so on...
 
 But each of them depends on the project needs, the tools of choice, etc. Hence, I’ll be adding examples of possible extensions that could be useful for some of you, while leaving this repo as light and starightforward as possible.
 
