@@ -33,4 +33,28 @@ public abstract class ApiClientBase {
         return RestAssured.with().body(payload).headers(finalHeaders).post(url);
     }
 
+    public io.restassured.response.Response patch(String url, Object payload, Map<String, String> headers) {
+        Map<String, String> finalHeaders = MapUtils.combineMaps(baseHeaders, headers);
+
+        return RestAssured.with().body(payload).headers(finalHeaders).patch(url);
+    }
+
+    public io.restassured.response.Response delete(String url, Object payload, Map<String, String> headers) {
+        Map<String, String> finalHeaders = MapUtils.combineMaps(baseHeaders, headers);
+
+        return RestAssured.with().body(payload).headers(finalHeaders).delete(url);
+    }
+
+    public io.restassured.response.Response head(String url, Object payload, Map<String, String> headers) {
+        Map<String, String> finalHeaders = MapUtils.combineMaps(baseHeaders, headers);
+
+        return RestAssured.with().body(payload).headers(finalHeaders).head(url);
+    }
+
+    public io.restassured.response.Response options(String url, Object payload, Map<String, String> headers) {
+        Map<String, String> finalHeaders = MapUtils.combineMaps(baseHeaders, headers);
+
+        return RestAssured.with().body(payload).headers(finalHeaders).options(url);
+    }
+
 }

@@ -60,11 +60,11 @@ The `.env` file is used to store environment variables that are important for ru
 
 **Note:** it is crucial to **never** commit the values from the .env file or your personal environment variables to version control in a real project, as it can expose sensitive information.
 
-### Maven Plugins <font color="red">AGREGAR PRETTIER Y CHECKSTYLE</font>
+### Maven Plugins
 
-### Checkstyle
+#### Checkstyle
 
-You can use Checkstyle with the help Maven to validate your code and make sure you follow pre-defined guidelines set in [checkstyle.xml](checkstyle.xml).
+You can use Checkstyle with the help Maven to validate your code and make sure you follow pre-defined guidelines set in [checkstyle.xml](checkstyle.xml) for imports, constructors, etc.
 
 This project is configured to have some light and recommended checks. If you wish to expand the rules being enforced, [you can read available rules here](https://checkstyle.sourceforge.io/checks.html).
 More documentation about it [can be found here](https://checkstyle.sourceforge.io/config.html).
@@ -73,10 +73,10 @@ More documentation about it [can be found here](https://checkstyle.sourceforge.i
 mvn checkstyle:checkstyle
 ```
 
-### Prettier
+#### Prettier
 
-Prettier is configured to run with eslint and to format the code on each save.
-In case you want run it separately use the folowing scripts:
+Prettier is a plugin you can use with Maven to make sure all your code follow a set of defined format guidelines defined in [.prettierrc.yml](.prettierrc.yml).
+More documentation on what to define about it [can be found here](https://prettier.io/docs/options)
 
 - Check for issues:
 
@@ -119,8 +119,7 @@ Here's what `ServiceBase` offers:
 - **API Client Management**: It initializes and holds an instance of the `ApiClient`, ensuring that all service models use the same API client setup.
 - **Base URL Configuration**: It dynamically sets the base URL for API requests using the `BASEURL` from your `.env` file. This allows for flexibility across different environments (e.g., development, staging, production).
 - **Authentication**: The `authenticate` method simplifies the process of authenticating with the API. Once called, it stores the authentication token in the request headers, so subsequent API calls are authenticated. Note that as explained below in the [Authentication](#authentication) section, this is specific to this API, and must be adapted to your use case.
-- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with. 
-- <font color="red">IMPLEMENTAR LOS QUE FALTAN</font>
+- **HTTP Methods**: `ServiceBase` provides methods for common HTTP requests (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). These methods handle the request execution and timing, then format the response into a standardized `Response` object, making it easier to work with.
 
 ### Extending `ServiceBase`
 

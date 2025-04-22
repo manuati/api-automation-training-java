@@ -5,6 +5,8 @@ import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 
 public class BookingGetTest {
     private static Long bookingId;
@@ -50,11 +52,19 @@ public class BookingGetTest {
     @Tag("Unit")
     @DisplayName("Get Booking - Under 1000ms")
     public void getBookingSuccessfulLessThan1000ms() {
-        service.authenticate();
         ResponseContainer<BookingModel> response = service.getBooking(bookingId, null);
 
         Assertions.assertEquals(200, response.getStatus());
         Assertions.assertTrue(response.getResponseTime() < 1000);
+    }
+
+    @Test
+    @Tag("Smoke")
+    @DisplayName("Get All Bookings - Successful")
+    public void getAllBookingsSuccessful() {
+        ResponseContainer<List<BookingModel>> response = service.getBookings(null);
+
+        Assertions.assertEquals(200, response.getStatus());
     }
 
 }

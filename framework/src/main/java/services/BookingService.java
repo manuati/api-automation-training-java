@@ -5,6 +5,7 @@ import models.requests.BookingModel;
 import models.responses.BookingResponse;
 import models.responses.ResponseContainer;
 
+import java.util.List;
 import java.util.Map;
 
 public class BookingService extends ServiceBase {
@@ -20,4 +21,7 @@ public class BookingService extends ServiceBase {
         return this.getOne(this.url + "/" + bookingId, headers, BookingModel.class);
     }
 
+    public ResponseContainer<List<BookingModel>> getBookings(Map<String, String> headers) {
+        return this.getMany(this.url, headers);
+    }
 }
