@@ -124,7 +124,7 @@ Here's what `ServiceBase` offers:
 
 When you create a Service Model, you extend `ServiceBase` and define methods specific to the service you're testing. For example, a `BookingService` might have methods like `getBooking` or `createBooking`. Each method uses the HTTP methods provided by `ServiceBase` to interact with the API.
 
-Here's a simple example of a service model:
+Here's a simple example of a service model: <font color="red">CAMBIAR POR EJEMPLO CON OTRA API</font>
 
 ```java
 public class BookingService extends ServiceBase {
@@ -281,7 +281,7 @@ public void setup() {
 
 This repository utilizes GitHub Actions for continuous integration and delivery (CI/CD). Our pipeline is configured to run all tests on each Pull Request or Merge to the main branch. Here is what typically happens:
 
-1. **Linting**: The pipeline runs Checkstyle to check for syntax errors and enforce code style guidelines.
+1. **Linting**: The pipeline runs Checkstyle to check for syntax errors and the correct following of coding standards, and Prettier (optionally) to enforce code style guidelines.
 2. **Testing**: It executes the automated tests defined in the repository.
 3. **Deployment (Optional)**: If all tests pass, the pipeline can automatically deploy your code to the production environment.
 

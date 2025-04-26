@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import models.requests.CredentialModel;
 import models.responses.ResponseContainer;
 import models.responses.SessionResponse;
+import utils.EnvironmentUtils;
 import utils.ErrorMessages;
 import utils.MapUtils;
 import utils.StringUtils;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ServiceBase {
-    protected static Dotenv envVars = Dotenv.configure().load();
 
     protected ApiClient apiClient;
     protected String url;
@@ -29,15 +29,15 @@ public class ServiceBase {
     }
 
     private static String baseUrl() {
-        String url = envVars.get("BASEURL");
+        String url = EnvironmentUtils.getInstance().get("BASEURL");
         if (url == null) url = "";
 
         return url;
     }
 
     public final void authenticate() {
-        String username = envVars.get("USER");
-        String password = envVars.get("PASSWORD");
+        String username = EnvironmentUtils.getInstance().get("USER");
+        String password = EnvironmentUtils.getInstance().get("PASSWORD");
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             throw new RuntimeException(ErrorMessages.MISSING_USERNAME_PASSWORD);
