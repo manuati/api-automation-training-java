@@ -94,13 +94,12 @@ mvn prettier:write
 
 ```bash
 # Runs all tests
-mvn test
+mvn clean test
 
 # Runs tests by tag
-mvn test -Dgroups="Smoke"
-mvn test -Dgroups="Regression"
+mvn clean test -Dgroups=Smoke
+mvn clean test -Dgroups=Regression
 ```
-<font color="red">VER PORQUE HAY UNA DIFERENCIA DE CORRERLO DESDE EL README Y CONSOLA</font>
 
 ## Getting started
 
@@ -282,7 +281,7 @@ public void setup() {
 
 This repository utilizes GitHub Actions for continuous integration and delivery (CI/CD). Our pipeline is configured to run all tests on each Pull Request or Merge to the main branch. Here is what typically happens:
 
-1. **Linting**: The pipeline runs ESLint to check for syntax errors and enforce code style guidelines.
+1. **Linting**: The pipeline runs Checkstyle to check for syntax errors and enforce code style guidelines.
 2. **Testing**: It executes the automated tests defined in the repository.
 3. **Deployment (Optional)**: If all tests pass, the pipeline can automatically deploy your code to the production environment.
 
@@ -303,7 +302,7 @@ See branch `features/two-step-pipeline` as an example of a pipeline that do the 
 2. Runs the Regression tests, that do not make the pipeline fail.
 
 ### Linting in the pipeline
-As mentioned above, this job will run ESLint before running the tests. In the following screenshot, the pipeline failed due to an eslint error.
+As mentioned above, this job will run Checkstyle before running the tests. In the following screenshot, the pipeline failed due to a Checkstyle error.
 
 ![Eslint error](./images/eslint-error.png)
 
