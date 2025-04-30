@@ -1,5 +1,5 @@
 # API Automation Training
-
+<font color="RED">DEJE ESTE PARA TENER DE COMPARACION RAPIDA CON EL README ORIGINAL. YA QUE HAY QUE HACER AJUSTES AL OTRO README, SE PUEDE BORRAR LUEGO</font>
 Welcome to the API Automation Training! This repository serves as the foundation for the training, providing a base API Automation Framework and step-by-step guidance for participants to build their API automation skills.
 
 Find the API Framework documentation here.
@@ -61,22 +61,21 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 3. Update .env with the test API base URL:
     ```yaml
-    BASEURL=https://restful-booker.herokuapp.com
+    BASEURL=https://petstore.swagger.io/v2
     ```
 4. Explore the framework:
     - Read the [API Automation Framework](https://github.com/damianpereira86/api-automation-training/tree/main/framework#readme) Readme. <font color="red">AJUSTAR CUANDO TENGAMOS EL README MISMO DEL FRAMEWORK PRONTO</font>
     - Understand the `ServiceBase` class and its usage in service models.
 
-5. Create a new `BookingService` extending `ServiceBase`.
-6. Implement methods in `BookingService` for the following operations:
-    - `GET /booking`
-    - `POST /booking`
-    - `GET /booking/{bookingId}`
-    - `DELETE /booking/{bookingId}`
-<font color="RED">HAY DOS ENDPOINTS MAS DISPONIBLES, UpdateBooking Y PartialUpdateBooking. NO LOS AGREGUE PARA HACERLO PARALELO A COMO ESTA DEFINIDO EN STORE SERVICE, PERO TA, PARA QUE SEPAS NOMAS QUE HAY MAS PARA USAR</font>
+5. Create a new `StoreService` extending `ServiceBase`.
+6. Implement methods in `StoreService` for the following operations:
+    - `GET /store/inventory`
+    - `POST /store/order`
+    - `GET /store/order/{orderId}`
+    - `DELETE /store/order/{orderId}`
 7. Add request and response models where appropriate.
 8. Write the **first test** for the following main scenario:
-    - Create a booking and validate the response (`POST /booking`).
+    - Create an order and validate the response (`POST /store/order`).
 
 
 **Deliverable**:
@@ -89,9 +88,9 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 1. If you are not familiar with GitHub Actions, do some research to understand the basics, such as workflows, jobs, and steps. Refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
 2. Explore the `.github/workflows/main.yml` file to understand the workflow triggers and steps.
-3. Based on the research you did on GitHub Actions and your experience running the tests in IntelliJ, adjust the Maven line in the main.yml file so the tests are run in the pipeline.
+3. Based on the research you did on Github Actions and your experience runing the tests in Visual Code, add the missing line in the main.yml file so the tests are run in the pipeline.
 4. Create a new environment called "Testing" in **Settings** > **Environments** > **New environment**
-5. Configure the `BASEURL` as an environment variable with value: `https://restful-booker.herokuapp.com`
+5. Configure the `BASEURL` as an environment variable with value: `https://petstore.swagger.io/v2`
 
 **Deliverable**:
 
@@ -101,9 +100,9 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 ### **Milestone 3: Complete the Create Order Suite**
 
-**Objective**: Write tests for the rest of the Create Booking test Suite.
+**Objective**: Write tests for the rest of the Create Store test Suite.
 
-1. Write additional tests for the Create Order (`POST /booking`) endpoint.
+1. Write additional tests for the Create Order (`POST /store/order`) endpoint.
 2. Include positive and negative tests.
 3. Use tags like `@Tag("Smoke")` or `@Tag("Regression")` for test categorization. `@Tag("Smoke")` tests should be the ones that are absolutely required to pass.
 
@@ -113,11 +112,12 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 ---
 
-### **Milestone 4: Verify the booking was created**
-<font color="RED">REVISAR LA NOTA Y EL PUNTO CUATRO. CREO QUE NO APLICAN PARA EL ENDPOINT DE BOOKING DE LA MISMA FORMA QUE PARA EL DE PETSTORE</font>
-**Objective**: Make a request to the get booking endpoint to verify the booking was actually created.
+### **Milestone 4: Verify the order was created**
+
+**Objective**: Make a request to the get order endpoint to verify the order was actually created.
 
 Note: when testing a POST endpoint you normally don't send the ID (it is generated automatically and returned to you in the response), but you might have noticed that this endpoint allows you to do that, and the order gets actually created with the ID you sent.
+But in case you didn't already notice, if you didn't provide the ID in the Create Order endpoint, it does not actually create an order (all the data is mocked). For this reason, if you did that and only asserted against the response, your positive tests should have passed. This is why is so important to verify the resources were actually created.
 
 1. For your positive tests, after the response assertions, obtain the created order ID from the response
 2. Make a request to the `GET /store/order/{orderId}` endpoint with the order ID
@@ -135,9 +135,9 @@ Note: when testing a POST endpoint you normally don't send the ID (it is generat
 **Objective**: Write tests for the rest of the Store service following the practices covered above.
 
 1. Write a test suite for each of the remaining endpoints in the Store Service:
-    - `GET /booking`
-    - `GET /booking/{bookingId}`
-    - `DELETE /booking/{bookingId}`
+    - `GET /store/inventory`
+    - `GET /store/order/{orderId}`
+    - `DELETE /store/order/{orderId}`
 
 **Deliverable**:
 
@@ -152,13 +152,13 @@ Note: when testing a POST endpoint you normally don't send the ID (it is generat
 Note: Remember that with this API, to create an order that you can actually use in the Get Order scenarios you must provide an order ID in the order creation.
 
 1. Write a [before each](https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions) in the Get Order test suite.
-    1. Add a Before function that creates an order by calling the right method in the BookingService model.
+    1. Add a Before function that creates an order by calling the right method in the StoreService model.
     2. Obtain and store the order ID (the variable for this must be declared above the before function).
     3. Use the saved Order ID in the Get Order test.
 2. Write an [after each](https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions) in the Create Order test suite. This is very useful for cleaning up data after a test execution.
     1. Declare an orderId variable on top of the test suite
     2. After every positive test, update the orderId variable with the newly created Order ID.
-    3. Add an AfterEach hook that deletes the created orders by calling the right method in the BookingService model.
+    3. Add an AfterEach hook that deletes the created orders by calling the right method in the StoreService model.
 
 **Note**: As the name implies, @BeforeEach and @AfterEach functions run before and after any test of the class, so make sure to not create a test in the class that does not need of said functions, or at least that it is affected by them
 
@@ -180,7 +180,6 @@ Note: Remember that with this API, to create an order that you can actually use 
 
 ---
 
-<font color="RED">NO ESTOY SEGURO SI SE REFIERE A ALGUN ASPECTO EXTRA DE LA PETSTORE API, O DE IMPLEMENTAR UN NUEVO SERVICE PARA LA PETSTORE</font>
 ### **Milestone 8: Extend to Other Services**
 
 **Objective**: Implement automation for additional services (`Pet` and `User`).
