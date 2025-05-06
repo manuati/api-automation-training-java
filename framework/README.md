@@ -150,18 +150,21 @@ By extending ServiceBase, BookingService gains all the functionalities of making
 In addition to **Service Models**, you should declare **Request** and **Response** models as needed. For example, here is the BookingModel that will be used to deserialize the response from the endpoint above.
 
 ```java
-private Integer id;
-private String firstname;
-private String lastname;
-private Integer totalprice;
-private Boolean depositpaid;
-private BookingDates bookingdates;
-private String additionalneeds;
+public class BookingModel {
+    
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    private Integer totalprice;
+    private Boolean depositpaid;
+    private BookingDates bookingdates;
+    private String additionalneeds;
 
-public BookingModel() {
+    public BookingModel() {
+    }
+
+// Getter and setter methods    
 }
-
-// Getter and setter methods
 ```
 
 ## Tests
