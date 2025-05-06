@@ -124,42 +124,44 @@ Here's what `ServiceBase` offers:
 
 When you create a Service Model, you extend `ServiceBase` and define methods specific to the service you're testing. For example, a `BookingService` might have methods like `getBooking` or `createBooking`. Each method uses the HTTP methods provided by `ServiceBase` to interact with the API.
 
-Here's a simple example of a service model using the [Restful API](https://restful-api.dev/): 
+Here's a simple example of a service model:
 
 ```java
-public class RestfulApiService extends ServiceBase {
-    public RestfulApiService() {
-        super("/objects");
+public class BookingService extends ServiceBase {
+    public BookingService() {
+        super("/booking");
     }
 
-    public ResponseContainer<ObjectResponse> getObject(String objectId) {
-        return this.getOne(this.url + "/" + objectId, null, ObjectResponse.class);
+    public ResponseContainer<BookingResponse> addBooking(BookingModel model, Map<String, String> headers) {
+        return this.post(this.url, model, headers, BookingResponse.class);
     }
 
-    public ResponseContainer<ObjectResponse> createObject(ObjectModel objectModel) {
-        return this.post(this.url, objectModel, null, ObjectResponse.class);
+    public ResponseContainer<BookingModel> getBooking(Long bookingId, Map<String, String> headers) {
+        return this.getOne(this.url + "/" + bookingId, headers, BookingModel.class);
     }
+
 }
 ```
 
-By extending ServiceBase, RestfulApiService gains all the functionalities of making HTTP requests, handling authentication, and standardizing responses, allowing you to focus on the logic specific to the Joke service. It must be noted that this specific API does not require authentication, but it is expected that they do as a standard.
+By extending ServiceBase, BookingService gains all the functionalities of making HTTP requests, handling authentication, and standardizing responses, allowing you to focus on the logic specific to the Booking service.
 
 ### Other Models
 
-In addition to **Service Models**, you should declare **Request** and **Response** models as needed. For example, here is the ObjectResponse model that will be used to deserialize the response from the endpoint above.
+In addition to **Service Models**, you should declare **Request** and **Response** models as needed. For example, here is the BookingModel that will be used to deserialize the response from the endpoint above.
 
 ```java
-public class ObjectResponse {
-    private String id;
-    private String name;
-    private HashMap<String, String> data;
-    private String createdAt;
+private Integer id;
+private String firstname;
+private String lastname;
+private Integer totalprice;
+private Boolean depositpaid;
+private BookingDates bookingdates;
+private String additionalneeds;
 
-    public ObjectResponse() {
-    }
-
-    // Getter and setter methods
+public BookingModel() {
 }
+
+// Getter and setter methods
 ```
 
 ## Tests
@@ -168,39 +170,50 @@ Next, you can create a simple test like this.
 
 ```java
 @Test
-public void createObjectSuccess() {
-    HashMap<String, String> objectData = new HashMap<>();
-    objectData.put("data1","value1");
-    objectData.put("data2","value2");
-
-    ObjectModel objectModel = new ObjectModel();
-    objectModel.setName("object-name");
-    objectModel.setData(objectData);
-    ResponseContainer<ObjectResponse> response = service.createObject(objectModel);
+public void testGetBooking() {
+    service.authenticate();
+    ResponseContainer<BookingModel> response = service.getBooking(1l, null);
 
     Assertions.assertEquals(200, response.getStatus());
     Assertions.assertNotNull(response.getData());
 }
 ```
 
-Note the ObjectResponse on the generic getObject function. With that in place, you can easily assert against the response body properties.
+Note the BookingModel on the generic getBooking function. With that in place, you can easily assert against the response body properties.
 
 ```java
 @Test
-public void getObjectSuccess() {
-    ObjectModel objectModel = new ObjectModel();
-    objectModel.setName("object-name");
-    ResponseContainer<ObjectResponse> responsePost = service.createObject(objectModel);
-    String objectId = responsePost.getData().getId();
+public void createBookingSuccessful() {
+    BookingModel model = new BookingModel();
 
-    ResponseContainer<ObjectResponse> response = service.getObject(objectId);
+    model.setFirstname("Jim");
+    model.setLastname("Brown");
+    model.setDepositpaid(true);
+    model.setTotalprice(111);
+    model.setAdditionalneeds("Breakfast");
+    BookingModel.BookingDates bookingDates = new BookingModel.BookingDates();
+    bookingDates.setCheckin("2018-01-01");
+    bookingDates.setCheckout("2019-01-01");
+    model.setBookingdates(bookingDates);
 
+    service.authenticate();
+    ResponseContainer<BookingResponse> response = service.addBooking(model, null);
+    
+    BookingModel responseModel = response.getData().getBooking();
+    
     Assertions.assertEquals(200, response.getStatus());
-    Assertions.assertEquals(objectId, response.getData().getId());
+    Assertions.assertNotNull(response.getData().getBookingid());
+    Assertions.assertEquals(model.getFirstname(), responseModel.getFirstname());
+    Assertions.assertEquals(model.getLastname(), responseModel.getLastname());
+    Assertions.assertEquals(model.getDepositpaid(), responseModel.getDepositpaid());
+    Assertions.assertEquals(model.getTotalprice(), responseModel.getTotalprice());
+    Assertions.assertEquals(model.getAdditionalneeds(), responseModel.getAdditionalneeds());
+    Assertions.assertEquals(model.getBookingdates().getCheckin(), responseModel.getBookingdates().getCheckin());
+    Assertions.assertEquals(model.getBookingdates().getCheckout(), responseModel.getBookingdates().getCheckout());
 }
 ```
 
-In the example above, I am using a call to the createObject endpoint to create the object needed for the getObject test, and then using the newly created object to assert against it.
+In the example above, I am using a call to the addBooking endpoint to create the booking needed for the getBooking test, and then using the newly created booking to assert against it.
 
 ## Performance
 
@@ -208,13 +221,9 @@ Request duration is measured and saved to the responseTime property of the respo
 
 ```java
 @Test
-public void getObjectSuccessUnder1000ms() {
-    ObjectModel objectModel = new ObjectModel();
-    objectModel.setName("object-name");
-    ResponseContainer<ObjectResponse> responsePost = service.createObject(objectModel);
-    String objectId = responsePost.getData().getId();
-
-    ResponseContainer<ObjectResponse> response = service.getObject(objectId);
+public void getBookingSuccessfulLessThan1000ms() {
+    service.authenticate();
+    ResponseContainer<BookingModel> response = service.getBooking(1000l, null);
 
     Assertions.assertEquals(200, response.getStatus());
     Assertions.assertTrue(response.getResponseTime() < 1000);
