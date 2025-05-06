@@ -115,12 +115,13 @@ Before starting each milestone, create a feature branch with the name of the mil
 
 ### **Milestone 4: Verify the booking was created**
 <font color="RED">REVISAR LA NOTA Y EL PUNTO CUATRO. CREO QUE NO APLICAN PARA EL ENDPOINT DE BOOKING DE LA MISMA FORMA QUE PARA EL DE PETSTORE</font>
+
 **Objective**: Make a request to the get booking endpoint to verify the booking was actually created.
 
-Note: when testing a POST endpoint you normally don't send the ID (it is generated automatically and returned to you in the response), but you might have noticed that this endpoint allows you to do that, and the order gets actually created with the ID you sent.
+**Note**: when testing a POST endpoint you normally don't send the ID (it is generated automatically and returned to you in the response), but you might have noticed that this endpoint allows you to do that, and the order gets actually created with the ID you sent.
 
 1. For your positive tests, after the response assertions, obtain the created order ID from the response
-2. Make a request to the `GET /store/order/{orderId}` endpoint with the order ID
+2. Make a request to the `GET /booking/{bookingId}` endpoint with the order ID
 3. Verify the response of the Get Order endpoint is 200, hence, the order was created successfully.
 4. Since the test where you didn't provide the ID for the POST in the first place should now be failing, follow step 4 in Milestone 5 for handling it.
 
@@ -130,7 +131,7 @@ Note: when testing a POST endpoint you normally don't send the ID (it is generat
 
 ---
 
-### **Milestone 5: Create Test Suites for the rest of the Store Service**
+### **Milestone 5: Create Test Suites for the rest of the Booking Service**
 
 **Objective**: Write tests for the rest of the Store service following the practices covered above.
 
@@ -147,6 +148,7 @@ Note: when testing a POST endpoint you normally don't send the ID (it is generat
 
 ### **Milestone 6: Pre and Post conditions: BeforeEach and AfterEach**
 <font color="red">LO AJUSTE PARA QUE TENGA SENTIDO CON JUNIT. VERIFICAR QUE ES LO QUE SE ESPERA</font>
+
 **Objective**: Write Before for pre-conditions and After for post-conditions.
 
 Note: Remember that with this API, to create an order that you can actually use in the Get Order scenarios you must provide an order ID in the order creation.
@@ -180,7 +182,7 @@ Note: Remember that with this API, to create an order that you can actually use 
 
 ---
 
-<font color="RED">NO ESTOY SEGURO SI SE REFIERE A ALGUN ASPECTO EXTRA DE LA PETSTORE API, O DE IMPLEMENTAR UN NUEVO SERVICE PARA LA PETSTORE</font>
+<font color="RED">SE REFIERE A UN ASPECTO EXTRA DE LA PETSTORE API, O DE IMPLEMENTAR UN NUEVO SERVICE PARA LA PETSTORE. LO REMUEVO?</font>
 ### **Milestone 8: Extend to Other Services**
 
 **Objective**: Implement automation for additional services (`Pet` and `User`).
