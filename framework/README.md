@@ -280,19 +280,16 @@ public void setup() {
 }
 ```
 
-## CI / CD  <font color="red">TENEMOS GITHUB ACTIONS, PERO AUN NO SUME NADA CORRESPONDIENTE AL LINTING Y TESTING. QUERRIA DISCUTIRLO BIEN PORQUE ES ALGO DISTINTO A COMO SE MANEJA EL MODELO DE TYPESCRIPT</font>
+## CI / CD
 
-This repository utilizes GitHub Actions for continuous integration and delivery (CI/CD). Our pipeline is configured to run all tests on each Pull Request or Merge to the main branch. Here is what typically happens:
+This repository utilizes GitHub Actions for continuous integration and delivery (CI/CD). Our pipeline is configured to run all tests on each Pull Request or Merge to the main branch.
 
-1. **Linting**: The pipeline runs Checkstyle to check for syntax errors and the correct following of coding standards, and Prettier (optionally) to enforce code style guidelines.
-2. **Testing**: It executes the automated tests defined in the repository.
-3. **Deployment (Optional)**: If all tests pass, the pipeline can automatically deploy your code to the production environment.
+Check the [Actions](https://github.com/damianpereira86/api-framework-ts-mocha/actions) tab to see passed and failed pipelines.
 
-Check the [Actions](https://github.com/damianpereira86/api-framework-ts-mocha/actions) tab to see passed and failed pipelines. <font color="red">MODIFICAR POR EL DEL REPO FINAL</font>
+![Pipeline](./images/cicd.jpg)
 
-![Pipeline](./images/cicd.png)
+Ensure that you configure any necessary environment variables and secrets. These can be managed in the repository’s **Settings** under **Secrets and variables**.
 
-Ensure that you configure any necessary environment variables and secrets. These can be managed in the repository’s **Settings** under **Secrets and variables**. <font color="red">ESTO ES DE VS CODE? O DE GITHUB?</font>
 1. Repository Variables: Go to Settings > Secrets and variables > Actions > Variables. (e.g., BASEURL)
 2. Repository Secrets: Go to Settings > Secrets and variables > Actions > Secrets.(e.g., USER and PASSWORD)
 
@@ -300,18 +297,9 @@ You can customize the CI/CD pipeline to suit your project's needs. For example, 
 
 To get started with GitHub Actions in your project, check out the `.github/workflows` directory in this repository. Here, you'll find the workflow files that define our CI/CD processes. You can modify these files to change the pipeline or add new workflows.
 
-See branch `features/two-step-pipeline` as an example of a pipeline that do the following: <font color="red">HACEMOS UNA RAMA ASI?</font>
-1. Runs the Smoke tests, and fails in case any test fails,
-2. Runs the Regression tests, that do not make the pipeline fail.
-
-### Linting in the pipeline
-As mentioned above, this job will run Checkstyle before running the tests. In the following screenshot, the pipeline failed due to a Checkstyle error.
-
-![Eslint error](./images/eslint-error.png)
-
 For more detailed examples and advanced features, refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
 
-But each of them depends on the project needs, the tools of choice, etc. Hence, I’ll be adding examples of possible extensions that could be useful for some of you, while leaving this repo as light and starightforward as possible.
+But each of them depends on the project needs, the tools of choice, etc. Hence, I’ll be adding examples of possible extensions that could be useful for some of you, while leaving this repo as light and straight forward as possible.
 
 ## Next steps
 
